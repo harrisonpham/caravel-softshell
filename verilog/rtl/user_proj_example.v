@@ -56,102 +56,47 @@ module user_proj_example #(
     output [`MPRJ_IO_PADS-1:0] io_out,
     output [`MPRJ_IO_PADS-1:0] io_oeb
 );
-    wire clk;
-    wire rst;
 
-    wire [`MPRJ_IO_PADS-1:0] io_in;
-    wire [`MPRJ_IO_PADS-1:0] io_out;
-    wire [`MPRJ_IO_PADS-1:0] io_oeb;
+    softshell_top softshell (
+    `ifdef USE_POWER_PINS
+	.vdda1(vdda1),	// User area 1 3.3V power
+	.vdda2(vdda2),	// User area 2 3.3V power
+	.vssa1(vssa1),	// User area 1 analog ground
+	.vssa2(vssa2),	// User area 2 analog ground
+	.vccd1(vccd1),	// User area 1 1.8V power
+	.vccd2(vccd2),	// User area 2 1.8V power
+	.vssd1(vssd1),	// User area 1 digital ground
+	.vssd2(vssd2),	// User area 2 digital ground
+    `endif
 
-    wire [31:0] rdata; 
-    wire [31:0] wdata;
-    wire [BITS-1:0] count;
+	// MGMT core clock and reset
 
-    wire valid;
-    wire [3:0] wstrb;
-    wire [31:0] la_write;
+    	.wb_clk_i(wb_clk_i),
+    	.wb_rst_i(wb_rst_i),
 
-    // WB MI A
-    assign valid = wbs_cyc_i && wbs_stb_i; 
-    assign wstrb = wbs_sel_i & {4{wbs_we_i}};
-    assign wbs_dat_o = rdata;
-    assign wdata = wbs_dat_i;
+	// MGMT SoC Wishbone Slave
 
-    // IO
-    assign io_out = count;
-    assign io_oeb = {(`MPRJ_IO_PADS-1){rst}};
+	.wbs_cyc_i(wbs_cyc_i),
+	.wbs_stb_i(wbs_stb_i),
+	.wbs_we_i(wbs_we_i),
+	.wbs_sel_i(wbs_sel_i),
+	.wbs_adr_i(wbs_adr_i),
+	.wbs_dat_i(wbs_dat_i),
+	.wbs_ack_o(wbs_ack_o),
+	.wbs_dat_o(wbs_dat_o),
 
-    // LA
-    assign la_data_out = {{(127-BITS){1'b0}}, count};
-    // Assuming LA probes [63:32] are for controlling the count register  
-    assign la_write = ~la_oen[63:32] & ~{BITS{valid}};
-    // Assuming LA probes [65:64] are for controlling the count clk & reset  
-    assign clk = (~la_oen[64]) ? la_data_in[64]: wb_clk_i;
-    assign rst = (~la_oen[65]) ? la_data_in[65]: wb_rst_i;
+	// Logic Analyzer
 
-    counter #(
-        .BITS(BITS)
-    ) counter(
-        .clk(clk),
-        .reset(rst),
-        .ready(wbs_ack_o),
-        .valid(valid),
-        .rdata(rdata),
-        .wdata(wbs_dat_i),
-        .wstrb(wstrb),
-        .la_write(la_write),
-        .la_input(la_data_in[63:32]),
-        .count(count)
+	.la_data_in(la_data_in),
+	.la_data_out(la_data_out),
+	.la_oen (la_oen),
+
+	// IO Pads
+
+	.io_in (io_in),
+    	.io_out(io_out),
+    	.io_oeb(io_oeb)
     );
-
-endmodule
-
-module counter #(
-    parameter BITS = 32
-)(
-    input clk,
-    input reset,
-    input valid,
-    input [3:0] wstrb,
-    input [BITS-1:0] wdata,
-    input [BITS-1:0] la_write,
-    input [BITS-1:0] la_input,
-    output ready,
-    output [BITS-1:0] rdata,
-    output [BITS-1:0] count
-);
-    reg ready;
-    reg [BITS-1:0] count;
-    reg [BITS-1:0] rdata;
-
-    always @(posedge clk) begin
-        if (reset) begin
-            count <= 0;
-            ready <= 0;
-        end else begin
-            ready <= 1'b0;
-            if (~|la_write) begin
-                count <= count + 1;
-            end
-            if (valid && !ready) begin
-                ready <= 1'b1;
-                rdata <= count;
-                if (wstrb[0]) count[7:0]   <= wdata[7:0];
-                if (wstrb[1]) count[15:8]  <= wdata[15:8];
-                if (wstrb[2]) count[23:16] <= wdata[23:16];
-                if (wstrb[3]) count[31:24] <= wdata[31:24];
-            end
-        end
-    end
-
-    genvar i;
-    generate 
-        for(i=0; i<BITS; i=i+1) begin
-          always @(posedge clk) begin
-              if (la_write[i]) count[i] <= la_input[i];
-          end
-        end
-    endgenerate
 
 endmodule
 `default_nettype wire
