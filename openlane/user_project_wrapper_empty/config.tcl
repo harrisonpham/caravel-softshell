@@ -26,6 +26,8 @@ set ::env(CLOCK_PERIOD) "10"
 set ::env(PL_OPENPHYSYN_OPTIMIZATIONS) 0
 set ::env(DIODE_INSERTION_STRATEGY) 0
 
+set ::env(ROUTING_CORES) 10
+
 # Need to fix a FastRoute bug for this to work, but it's good
 # for a sense of "isolation"
 set ::env(MAGIC_ZEROIZE_ORIGIN) 0
