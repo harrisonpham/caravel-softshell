@@ -5,18 +5,18 @@ set ::env(DESIGN_NAME) user_proj_example
 set ::env(VERILOG_FILES) "\
 	$script_dir/../../verilog/rtl/defines.v \
 	$script_dir/../../verilog/rtl/user_proj_example.v \
-	$script_dir/../../softshell/rtl/softshell_top.v \
-	$script_dir/../../softshell/rtl/rv_core.v \
-	$script_dir/../../softshell/third_party/verilog-wishbone/rtl/wb_arbiter_5.v \
-	$script_dir/../../softshell/third_party/verilog-wishbone/rtl/arbiter.v \
-	$script_dir/../../softshell/third_party/verilog-wishbone/rtl/priority_encoder.v \
-	$script_dir/../../softshell/third_party/verilog-wishbone/rtl/wb_mux_3.v \
-	$script_dir/../../softshell/third_party/verilog-wishbone/rtl/wb_mux_4.v \
-	$script_dir/../../softshell/third_party/picorv32_wb/mem_ff_wb.v \
-	$script_dir/../../softshell/third_party/picorv32_wb/simpleuart.v \
-	$script_dir/../../softshell/third_party/picorv32_wb/spimemio.v \
-	$script_dir/../../softshell/third_party/picorv32_wb/gpio32_wb.v \
-	$script_dir/../../softshell/third_party/picorv32_wb/picorv32.v"
+	$script_dir/../../verilog/rtl/softshell/rtl/softshell_top.v \
+	$script_dir/../../verilog/rtl/softshell/rtl/rv_core.v \
+	$script_dir/../../verilog/rtl/softshell/third_party/verilog-wishbone/rtl/wb_arbiter_5.v \
+	$script_dir/../../verilog/rtl/softshell/third_party/verilog-wishbone/rtl/arbiter.v \
+	$script_dir/../../verilog/rtl/softshell/third_party/verilog-wishbone/rtl/priority_encoder.v \
+	$script_dir/../../verilog/rtl/softshell/third_party/verilog-wishbone/rtl/wb_mux_3.v \
+	$script_dir/../../verilog/rtl/softshell/third_party/verilog-wishbone/rtl/wb_mux_4.v \
+	$script_dir/../../verilog/rtl/softshell/third_party/picorv32_wb/mem_ff_wb.v \
+	$script_dir/../../verilog/rtl/softshell/third_party/picorv32_wb/simpleuart.v \
+	$script_dir/../../verilog/rtl/softshell/third_party/picorv32_wb/spimemio.v \
+	$script_dir/../../verilog/rtl/softshell/third_party/picorv32_wb/gpio32_wb.v \
+	$script_dir/../../verilog/rtl/softshell/third_party/picorv32_wb/picorv32.v"
 
 #set ::env(VERILOG_INCLUDE_DIRS) "\
 #	$script_dir/../../softshell"
