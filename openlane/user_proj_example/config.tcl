@@ -33,7 +33,10 @@ set ::env(FP_PDN_CORE_RING) 0
 #set ::env(GLB_RT_ALLOW_CONGESTION) 1
 set ::env(GLB_RT_MAXLAYER) 5
 
-set ::env(PL_TARGET_DENSITY) 0.45
+set ::env(PL_TARGET_DENSITY) 0.35
+
+# Don't use met5.
+set ::env(GLB_RT_OBS) "met5 0 0 2400 3000"
 
 # Diodes inserted using interactive.tcl.
 set ::env(DIODE_INSERTION_STRATEGY) 0

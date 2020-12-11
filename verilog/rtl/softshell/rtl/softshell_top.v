@@ -167,7 +167,7 @@ module softshell_top (
 
       rv_core #(
         // TODO(hdpham): Resize this once the design fits.
-        .MEM_WORDS(16),
+        .MEM_WORDS(32),
         // Boot from flash.
         // TODO(hdpham): Should we switch this back to RAM?
         .PROGADDR_RESET(SHARED_FLASH_ADDR | ((i + 1) << 16)),
@@ -203,7 +203,7 @@ module softshell_top (
   wire [31:0] mem_dat_o;
 
   mem_ff_wb #(
-    .MEM_WORDS(256)
+    .MEM_WORDS(384)
   ) shared_mem (
     .wb_clk_i(wb_clk_i),
     .wb_rst_i(reset),
