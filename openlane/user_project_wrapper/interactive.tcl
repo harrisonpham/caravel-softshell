@@ -14,7 +14,7 @@ set ::env(FP_DEF_TEMPATE) $script_dir/../../def/user_project_wrapper_empty.def
 
 apply_def_template
 
-add_macro_placement mprj 220 220 N
+add_macro_placement mprj 300 300 N
 
 manual_macro_placement f
 
