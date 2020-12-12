@@ -23,7 +23,7 @@
 
 // Design.
 `ifdef GL
-  `include "../../caravel-softshell-custdiodes/verilog/gl/user_proj_example.v"
+  `include "../../../gl/user_proj_example.v"
 `else
   `include "softshell_top.v"
   `include "rv_core.v"
