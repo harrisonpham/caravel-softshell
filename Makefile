@@ -55,7 +55,7 @@ compress: $(LARGE_FILES_XZ)
 
 
 $(ARCHIVE_SOURCES): %: %.xz
-	@xz --decompress $< &&\
+	@xz --decompress --threads=$(shell nproc) $< &&\
 	echo "$< -> $@";\
 
 .PHONY: uncompress

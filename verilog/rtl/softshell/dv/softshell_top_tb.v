@@ -14,12 +14,12 @@
 `include "third_party/picorv32/picosoc/spiflash.v"
 
 // Gatelevel models.
-`ifdef GL
+//`ifdef GL
   `include "libs.ref/sky130_fd_sc_hd/verilog/primitives.v"
   `include "libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v"
   // `include "libs.ref/sky130_fd_sc_hvl/verilog/primitives.v"
   // `include "libs.ref/sky130_fd_sc_hvl/verilog/sky130_fd_sc_hvl.v"
-`endif
+//`endif
 
 // Design.
 `ifdef GL
@@ -27,16 +27,21 @@
 `else
   `include "softshell_top.v"
   `include "rv_core.v"
+  `include "pinmux.v"
+  `include "pcpi_flexio.v"
+  `include "third_party/verilog-wishbone/rtl/wb_arbiter_3.v"
+  `include "third_party/verilog-wishbone/rtl/wb_arbiter_4.v"
   `include "third_party/verilog-wishbone/rtl/wb_arbiter_5.v"
   `include "third_party/verilog-wishbone/rtl/arbiter.v"
   `include "third_party/verilog-wishbone/rtl/priority_encoder.v"
   `include "third_party/verilog-wishbone/rtl/wb_mux_3.v"
-  `include "third_party/verilog-wishbone/rtl/wb_mux_4.v"
+  `include "third_party/verilog-wishbone/rtl/wb_mux_5.v"
   `include "third_party/picorv32_wb/mem_ff_wb.v"
   `include "third_party/picorv32_wb/simpleuart.v"
   `include "third_party/picorv32_wb/spimemio.v"
   `include "third_party/picorv32_wb/picorv32.v"
   `include "third_party/picorv32_wb/gpio32_wb.v"
+  `include "third_party/wb2axip/rtl/afifo.v"
 `endif
 
 module softshell_top_tb;
@@ -65,7 +70,10 @@ module softshell_top_tb;
   reg [`MPRJ_IO_PADS-1:0] io_in_reg;
 
   // Exclude flash pads for now.
-  assign io_in[33:0] = io_in_reg;
+  assign io_in[30:0] = io_in_reg;
+
+  // UART loopback pin 32 (RX) to pin 31 (TX)
+  assign io_in[31] = (!io_oeb[30]) ? (io_out[30]) : (1'bz);
 
   always #50 clk = ~clk;
 
@@ -101,20 +109,21 @@ module softshell_top_tb;
     la_data_in[4:1] = 4'b1111;
 
     $display("Testing shared memory");
-    for (i = 0; i < 256; i = i + 4) begin
+    for (i = 0; i < 32 * 4; i = i + 4) begin
       address = 32'h3000_0000 + i;
       data = $random;
       write(address, data);
-      write(address + 4, data);
+      write(address + 4, ~data);
       read_assert(address, data);
+      read_assert(address + 4, ~data);
     end
-    for (i = 0; i < 256; i = i + 4) begin
+    for (i = 0; i < `SHARED_MEM_WORDS * 4; i = i + 4) begin
       address = 32'h3000_0000 + i;
       data = i;
       write(address, data);
       read_assert(address, data);
     end
-    for (i = 0; i < 256; i = i + 4) begin
+    for (i = 0; i < `SHARED_MEM_WORDS * 4; i = i + 4) begin
       address = 32'h3000_0000 + i;
       data = i;
       read_assert(address, data);
@@ -234,8 +243,10 @@ module softshell_top_tb;
     input [31:0] data;
     begin
       read(addr);
-      if (wb_dat_o != data)
+      if (wb_dat_o != data) begin
         $error("R!! %0h!=%0h", wb_dat_o, data);
+        $fatal;
+      end
     end
   endtask
 

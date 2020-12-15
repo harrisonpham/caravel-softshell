@@ -7,9 +7,9 @@ FIRMWARE_PATH = .
 GCC_PATH ?= /opt/riscv32ic/bin
 GCC_PREFIX ?= riscv32-unknown-elf
 
-SIM_FLAGS ?= -DSIM -DFUNCTIONAL
+SIM_FLAGS ?= -DSIM -DFUNCTIONAL -DUSE_POWER_PINS
 ifdef GL
-	SIM_FLAGS += -DGL -DUSE_POWER_PINS
+	SIM_FLAGS += -DGL
 endif
 
 all:  ${PATTERN:=.fst}
@@ -22,9 +22,9 @@ all:  ${PATTERN:=.fst}
 %.fst: %.vvp
 	vvp $< -fst
 
-%.elf: %.c $(FIRMWARE_PATH)/sections.lds $(FIRMWARE_PATH)/start.s
+%.elf: %.c $(FIRMWARE_PATH)/sections_cpu0.lds $(FIRMWARE_PATH)/start.s
 	${GCC_PATH}/${GCC_PREFIX}-gcc -march=rv32ic -mabi=ilp32 \
-	-Wl,-Bstatic,-T,$(FIRMWARE_PATH)/sections.lds,--strip-debug \
+	-Wl,-Bstatic,-T,$(FIRMWARE_PATH)/sections_cpu0.lds,--strip-debug \
 	-ffreestanding -nostdlib -o $@ $(FIRMWARE_PATH)/start.s $<
 
 %.hex: %.elf

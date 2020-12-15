@@ -4,9 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Pads:
-// io[37:6] - Mapped to 32-bit GPIO on each core
-// io[30] - UART RX
-// io[31] - UART TX
+// io[37:6] - Mapped to 32-bit pinmux (gpios, flexio, uart)
 // io[32] - Flash CSB
 // io[33] - Flash CLK
 // io[34] - Flash DIO0
@@ -33,6 +31,15 @@
 // `include "third_party/picorv32_wb/mem_ff_wb.v"
 // `include "third_party/picorv32_wb/simpleuart.v"
 // `include "third_party/picorv32_wb/spimemio.v"
+
+// Total shared memory in 32-bit words.
+`define SHARED_MEM_WORDS 512
+
+// Number of CPU cores.
+// TODO(hdpham): Make this less terrible and dangerous to use.
+`define NUM_CPUS 2
+// `define HAS_CPU3
+// `define HAS_CPU4
 
 module softshell_top (
 `ifdef USE_POWER_PINS
@@ -68,8 +75,6 @@ module softshell_top (
   output [`MPRJ_IO_PADS-1:0] io_oeb
 );
 
-  localparam NUM_CPUS = 4;
-
   // Softshell base address (used for filtering addresses from Caravel).
   parameter SOFTSHELL_MASK    = 32'hff00_0000;
   parameter SOFTSHELL_ADDR    = 32'h3000_0000;
@@ -83,8 +88,10 @@ module softshell_top (
 
   parameter FLASH_CONFIG_MASK = 32'hffff_0000;
   parameter FLASH_CONFIG_ADDR = 32'h3080_0000;
+  parameter PINMUX_ADDR_MASK  = 32'hffff_0000;
+  parameter PINMUX_BASE_ADDR  = 32'h3081_0000;
   parameter UART0_ADDR_MASK   = 32'hffff_0000;
-  parameter UART0_BASE_ADDR   = 32'h3081_0000;
+  parameter UART0_BASE_ADDR   = 32'h3082_0000;
 
   // wire clk;
   // wire resetb;
@@ -142,27 +149,31 @@ module softshell_top (
   end
 
   // CPU signals.
-  wire [31:0] wbm_adr_i [NUM_CPUS-1:0];
-  wire [31:0] wbm_dat_i [NUM_CPUS-1:0];
-  wire [31:0] wbm_dat_o [NUM_CPUS-1:0];
-  wire        wbm_we_i  [NUM_CPUS-1:0];
-  wire [3:0]  wbm_sel_i [NUM_CPUS-1:0];
-  wire        wbm_stb_i [NUM_CPUS-1:0];
-  wire        wbm_ack_o [NUM_CPUS-1:0];
-  wire        wbm_err_o [NUM_CPUS-1:0];
-  wire        wbm_rty_o [NUM_CPUS-1:0];
-  wire        wbm_cyc_i [NUM_CPUS-1:0];
+  wire [31:0] wbm_adr_i [`NUM_CPUS-1:0];
+  wire [31:0] wbm_dat_i [`NUM_CPUS-1:0];
+  wire [31:0] wbm_dat_o [`NUM_CPUS-1:0];
+  wire        wbm_we_i  [`NUM_CPUS-1:0];
+  wire [3:0]  wbm_sel_i [`NUM_CPUS-1:0];
+  wire        wbm_stb_i [`NUM_CPUS-1:0];
+  wire        wbm_ack_o [`NUM_CPUS-1:0];
+  wire        wbm_err_o [`NUM_CPUS-1:0];
+  wire        wbm_rty_o [`NUM_CPUS-1:0];
+  wire        wbm_cyc_i [`NUM_CPUS-1:0];
 
-  wire [31:0] gpio_in  [NUM_CPUS-1:0];
-  wire [31:0] gpio_out [NUM_CPUS-1:0];
-  wire [31:0] gpio_oeb [NUM_CPUS-1:0];
+  wire [31:0] gpio_in  [`NUM_CPUS-1:0];
+  wire [31:0] gpio_out [`NUM_CPUS-1:0];
+  wire [31:0] gpio_oeb [`NUM_CPUS-1:0];
 
-  wire cpu_reset[NUM_CPUS-1:0];
+  wire [7:0]  flexio_in  [`NUM_CPUS-1:0];
+  wire [7:0]  flexio_out [`NUM_CPUS-1:0];
+  wire [7:0]  flexio_oeb [`NUM_CPUS-1:0];
+
+  wire cpu_reset[`NUM_CPUS-1:0];
 
   // Generate the CPUs
   genvar i;
   generate
-    for (i = 0; i < NUM_CPUS; i = i + 1) begin
+    for (i = 0; i < `NUM_CPUS; i = i + 1) begin
       assign cpu_reset[i] = la_data_in[i + 1];
 
       rv_core #(
@@ -187,7 +198,11 @@ module softshell_top (
 
         .gpio_in(gpio_in[i]),
         .gpio_out(gpio_out[i]),
-        .gpio_oeb(gpio_oeb[i])
+        .gpio_oeb(gpio_oeb[i]),
+
+        .flexio_in(flexio_in[i]),
+        .flexio_out(flexio_out[i]),
+        .flexio_oeb(flexio_oeb[i])
       );
     end
   endgenerate
@@ -203,7 +218,7 @@ module softshell_top (
   wire [31:0] mem_dat_o;
 
   mem_ff_wb #(
-    .MEM_WORDS(384)
+    .MEM_WORDS(`SHARED_MEM_WORDS)
   ) shared_mem (
     .wb_clk_i(wb_clk_i),
     .wb_rst_i(reset),
@@ -217,6 +232,67 @@ module softshell_top (
     .wb_stb_i(mem_stb_i),
     .wb_ack_o(mem_ack_o),
     .wb_dat_o(mem_dat_o)
+  );
+
+  // Pinmux.
+  wire [31:0] pinmux_adr_i;
+  wire [31:0] pinmux_dat_i;
+  wire [3:0] pinmux_sel_i;
+  wire pinmux_cyc_i;
+  wire pinmux_stb_i;
+  wire pinmux_we_i;
+  wire [31:0] pinmux_dat_o;
+  wire pinmux_ack_o;
+
+  wire [31:0] pinmux_gpio_in;
+  wire [31:0] pinmux_gpio_out;
+  wire [31:0] pinmux_gpio_oeb;
+
+  pinmux #(
+    .NUM_INPUTS(1),
+    .NUM_OUTPUTS(1 + `NUM_CPUS * 8),
+    .NUM_GPIOS(32)
+  ) pinmux (
+    .wb_clk_i(wb_clk_i),
+    .wb_rst_i(reset),
+
+    .wb_adr_i(pinmux_adr_i),
+    .wb_dat_i(pinmux_dat_i),
+    .wb_sel_i(pinmux_sel_i),
+    .wb_cyc_i(pinmux_cyc_i),
+    .wb_stb_i(pinmux_stb_i),
+    .wb_we_i(pinmux_we_i),
+
+    .wb_dat_o(pinmux_dat_o),
+    .wb_ack_o(pinmux_ack_o),
+
+    .gpio_in(pinmux_gpio_in),
+    .gpio_out(pinmux_gpio_out),
+    .gpio_oeb(pinmux_gpio_oeb),
+
+    .peripheral_in({uart_rx}),
+    .peripheral_out({
+`ifdef HAS_CPU4
+                      flexio_out[3],
+`endif
+`ifdef HAS_CPU3
+                      flexio_out[2],
+`endif
+                      flexio_out[1],
+                      flexio_out[0],
+                      uart_tx
+                    }),
+    .peripheral_oeb({
+`ifdef HAS_CPU4
+                      flexio_oeb[3],
+`endif
+`ifdef HAS_CPU3
+                      flexio_oeb[2],
+`endif
+                      flexio_oeb[1],
+                      flexio_oeb[0],
+                      1'b0
+                    })
   );
 
   // Uarts.
@@ -363,8 +439,14 @@ module softshell_top (
   wire wbs_addr_sel;
   assign wbs_addr_sel = (wbs_adr_i & SOFTSHELL_MASK) == SOFTSHELL_ADDR;
 
-  // 5-port round-robin arbiter for shared memory.
+  // Round-robin arbiter for shared resources.
+`ifdef HAS_CPU4
   wb_arbiter_5 #(
+`elsif HAS_CPU3
+  wb_arbiter_4 #(
+`else
+  wb_arbiter_3 #(
+`endif
     .ARB_TYPE("ROUND_ROBIN")
   ) arbiter (
     .clk(wb_clk_i),
@@ -403,6 +485,7 @@ module softshell_top (
     .wbm2_rty_o(wbm_rty_o[1]),
     .wbm2_cyc_i(wbm_cyc_i[1]),
 
+`ifdef HAS_CPU3
     .wbm3_adr_i(wbm_adr_i[2]),
     .wbm3_dat_i(wbm_dat_i[2]),
     .wbm3_dat_o(wbm_dat_o[2]),
@@ -413,7 +496,9 @@ module softshell_top (
     .wbm3_err_o(wbm_err_o[2]),
     .wbm3_rty_o(wbm_rty_o[2]),
     .wbm3_cyc_i(wbm_cyc_i[2]),
+`endif
 
+`ifdef HAS_CPU4
     .wbm4_adr_i(wbm_adr_i[3]),
     .wbm4_dat_i(wbm_dat_i[3]),
     .wbm4_dat_o(wbm_dat_o[3]),
@@ -424,6 +509,7 @@ module softshell_top (
     .wbm4_err_o(wbm_err_o[3]),
     .wbm4_rty_o(wbm_rty_o[3]),
     .wbm4_cyc_i(wbm_cyc_i[3]),
+`endif
 
     .wbs_adr_o(mux_adr_i),
     .wbs_dat_i(mux_dat_o),
@@ -438,7 +524,7 @@ module softshell_top (
   );
 
   // Wishbone slave mux for shared memory and peripherals.
-  wb_mux_4 interconnect (
+  wb_mux_5 interconnect (
     .wbm_adr_i(mux_adr_i),
     .wbm_dat_i(mux_dat_i),
     .wbm_dat_o(mux_dat_o),
@@ -500,39 +586,118 @@ module softshell_top (
     .wbs3_rty_i(1'b0),
     .wbs3_cyc_o(flash_cfg_cyc_i),
     .wbs3_addr(FLASH_CONFIG_ADDR),
-    .wbs3_addr_msk(FLASH_CONFIG_MASK)
+    .wbs3_addr_msk(FLASH_CONFIG_MASK),
+
+    .wbs4_adr_o(pinmux_adr_i),
+    .wbs4_dat_i(pinmux_dat_o),
+    .wbs4_dat_o(pinmux_dat_i),
+    .wbs4_we_o(pinmux_we_i),
+    .wbs4_sel_o(pinmux_sel_i),
+    .wbs4_stb_o(pinmux_stb_i),
+    .wbs4_ack_i(pinmux_ack_o),
+    .wbs4_err_i(1'b0),
+    .wbs4_rty_i(1'b0),
+    .wbs4_cyc_o(pinmux_cyc_i),
+    .wbs4_addr(PINMUX_BASE_ADDR),
+    .wbs4_addr_msk(PINMUX_ADDR_MASK)
   );
 
   // Connect up GPIOs.
-  assign gpio_in[0] = io_in[37:6];
-  assign gpio_in[1] = io_in[37:6];
-  assign gpio_in[2] = io_in[37:6];
-  assign gpio_in[3] = io_in[37:6];
-  assign uart_rx = io_in[30];
+  wire [31:0] io_in_internal;
 
-  assign flash_io0_di = io_in[34];
-  assign flash_io1_di = io_in[35];
-  assign flash_io2_di = io_in[36];
-  assign flash_io3_di = io_in[37];
+  // Internal wires for input ports.
+  assign io_in_internal = io_in[37:6];
+
+  assign pinmux_gpio_in = io_in_internal;
+
+  assign gpio_in[0] = io_in_internal;
+  assign gpio_in[1] = io_in_internal;
+`ifdef HAS_CPU3
+  assign gpio_in[2] = io_in_internal;
+`endif
+`ifdef HAS_CPU4
+  assign gpio_in[3] = io_in_internal;
+`endif
+  // assign uart_rx = io_in_internal[24];
+
+  assign flash_io0_di = io_in_internal[28];
+  assign flash_io1_di = io_in_internal[29];
+  assign flash_io2_di = io_in_internal[30];
+  assign flash_io3_di = io_in_internal[31];
 
   assign io_out[5:0] = 6'b0;
   assign io_oeb[5:0] = {6{1'b1}};
 
   // TODO(hdpham): Add ability to disable or mux flash pins.
-  assign io_out[37:6] = gpio_out[0] | gpio_out[1] |
-                        gpio_out[2] | gpio_out[3] |
-                        {flash_io3_do, flash_io2_do, flash_io1_do,
-                         flash_io0_do, flash_clk, flash_csb, 26'b0} |
-                        {6'b0, uart_tx, 25'b0};
-  assign io_oeb[37:6] = gpio_oeb[0] & gpio_oeb[1] &
-                        gpio_oeb[2] & gpio_oeb[3] &
-                        {flash_io3_oeb, flash_io2_oeb, flash_io1_oeb,
-                         flash_io0_oeb, flash_clk_oeb, flash_csb_oeb,
-                         {26{1'b1}}} &
-                        ~{6'b0, uart_enabled, 25'b0};
+  // TODO(hdpham): Add pin mux to remap UART and other peripheral pins.
 
-  assign la_data_out[31:0] = io_out[37:6];
-  assign la_data_out[63:32] = io_in[37:6];
+  // Internal wires for output ports to workaround LVS errors.
+  wire [31:0] io_out_internal;
+  wire [31:0] io_oeb_internal;
+
+  assign io_out_internal = gpio_out[0] |
+                           gpio_out[1] |
+`ifdef HAS_CPU3
+                           gpio_out[2] |
+`endif
+`ifdef HAS_CPU4
+                           gpio_out[3] |
+`endif
+                           {flash_io3_do, flash_io2_do, flash_io1_do,
+                            flash_io0_do, flash_clk, flash_csb, 26'b0} |
+                           pinmux_gpio_out;
+                           //{6'b0, uart_tx, 25'b0};
+  assign io_oeb_internal = gpio_oeb[0] &
+                           gpio_oeb[1] &
+`ifdef HAS_CPU3
+                           gpio_oeb[2] &
+`endif
+`ifdef HAS_CPU4
+                           gpio_oeb[3] &
+`endif
+                           {flash_io3_oeb, flash_io2_oeb, flash_io1_oeb,
+                            flash_io0_oeb, flash_clk_oeb, flash_csb_oeb,
+                            {26{1'b1}}} &
+                           pinmux_gpio_oeb;
+                           //~{6'b0, uart_enabled, 25'b0};
+
+  wire [31:0] io_out_internal_buf;
+  wire [31:0] io_oeb_internal_buf;
+
+  // Hack to manually insert buffer so LVS is happy.
+  // TODO(hdpham): Wrap this to make non-technology specific.
+  generate
+    for (i = 0; i < 32; i = i + 1) begin
+      sky130_fd_sc_hd__buf_8 out_buf (
+`ifdef SIM
+        // TODO(hdpham): Figure out why the behavioral models don't work.
+        .VPWR(1'b1),
+        .VGND(1'b0),
+        .VPB(1'b1),
+        .VNB(1'b0),
+`endif
+        .X(io_out_internal_buf[i]),
+        .A(io_out_internal[i])
+      );
+
+      sky130_fd_sc_hd__buf_8 oeb_buf (
+`ifdef SIM
+        .VPWR(1'b1),
+        .VGND(1'b0),
+        .VPB(1'b1),
+        .VNB(1'b0),
+`endif
+        .X(io_oeb_internal_buf[i]),
+        .A(io_oeb_internal[i])
+      );
+    end
+  endgenerate
+
+  assign io_out[37:6] = io_out_internal_buf;
+  assign io_oeb[37:6] = io_oeb_internal_buf;
+
+  assign la_data_out[31:0] = io_out_internal_buf;
+  assign la_data_out[63:32] = io_oeb_internal_buf;
 
   // Tieoff unused.
   // TODO(hdpham): Tie this to useful things.

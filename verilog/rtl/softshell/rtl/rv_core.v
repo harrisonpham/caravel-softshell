@@ -55,7 +55,11 @@ module rv_core #(
 
   input [31:0]  gpio_in,
   output [31:0] gpio_out,
-  output [31:0] gpio_oeb
+  output [31:0] gpio_oeb,
+
+  input [7:0]   flexio_in,
+  output [7:0]  flexio_out,
+  output [7:0]  flexio_oeb
 );
 
   // Stack base address, mapped to end of private CCM.
@@ -72,6 +76,35 @@ module rv_core #(
 
   parameter SHARED_ADDR_MASK  = 32'hff00_0000;
   parameter SHARED_BASE_ADDR  = 32'h3000_0000;
+
+  // Flex IO custom instruction.
+  wire pcpi_valid;
+  wire [31:0] pcpi_insn;
+  wire [31:0] pcpi_rs1;
+  wire [31:0] pcpi_rs2;
+  wire pcpi_wr;
+  wire [31:0] pcpi_rd;
+  wire pcpi_wait;
+  wire pcpi_ready;
+
+  pcpi_flexio flexio (
+    .clk(wb_clk_i),
+    .resetb(~wb_rst_i),
+    .pcpi_valid(pcpi_valid),
+    .pcpi_insn(pcpi_insn),
+    .pcpi_rs1(pcpi_rs1),
+    .pcpi_rs2(pcpi_rs2),
+    .pcpi_wr(pcpi_wr),
+    .pcpi_rd(pcpi_rd),
+    .pcpi_wait(pcpi_wait),
+    .pcpi_ready(pcpi_ready),
+
+    .flexio_clk(wb_clk_i),
+    .flexio_resetb(~wb_rst_i),
+    .flexio_in(flexio_in),
+    .flexio_out(flexio_out),
+    .flexio_oeb(flexio_oeb)
+  );
 
   // Wishbone internal master bus.
   wire [31:0] cpu_adr_o;
@@ -100,7 +133,8 @@ module rv_core #(
     .ENABLE_DIV(0),
     .ENABLE_IRQ(1),
     .ENABLE_IRQ_QREGS(0),
-    .ENABLE_COUNTERS64(0)
+    .ENABLE_COUNTERS64(0),
+    .ENABLE_PCPI(1)
   ) cpu (
     .wb_clk_i(wb_clk_i),
     .wb_rst_i(wb_rst_i),
@@ -114,7 +148,16 @@ module rv_core #(
     .wbm_cyc_o(cpu_cyc_o),
     .wbm_dat_o(cpu_dat_o),
     .wbm_we_o(cpu_we_o),
-    .wbm_sel_o(cpu_sel_o)
+    .wbm_sel_o(cpu_sel_o),
+
+    .pcpi_valid(pcpi_valid),
+    .pcpi_insn(pcpi_insn),
+    .pcpi_rs1(pcpi_rs1),
+    .pcpi_rs2(pcpi_rs2),
+    .pcpi_wr(pcpi_wr),
+    .pcpi_rd(pcpi_rd),
+    .pcpi_wait(pcpi_wait),
+    .pcpi_ready(pcpi_ready)
   );
 
   // Wishbone CCM slave.

@@ -113,8 +113,8 @@ module gpio #(
                     if (iomem_wstrb) gpio_out <= iomem_wdata;
 
                 end else if (gpio_oeb_sel) begin
-                    iomem_rdata <= gpio_oeb;
-                    if (iomem_wstrb) gpio_oeb <= iomem_wdata;
+                    iomem_rdata <= ~gpio_oeb;
+                    if (iomem_wstrb) gpio_oeb <= ~iomem_wdata;
 
                 end else if (gpio_pu_sel) begin
                     iomem_rdata <= gpio_pu;
