@@ -5,12 +5,12 @@
 
 // Pads:
 // io[37:6] - Mapped to 32-bit pinmux (gpios, flexio, uart)
-// io[32] - Flash CSB
-// io[33] - Flash CLK
-// io[34] - Flash DIO0
-// io[35] - Flash DIO1
-// io[36] - Flash DIO2
-// io[37] - Flash DIO3
+// io[8] - Flash CSB
+// io[9] - Flash CLK
+// io[10] - Flash DIO0
+// io[11] - Flash DIO1
+// io[12] - Flash DIO2
+// io[13] - Flash DIO3
 //
 // LA:
 // la_data_in[0] - Wishbone reset (also resets CPUs)
@@ -37,8 +37,8 @@
 
 // Number of CPU cores.
 // TODO(hdpham): Make this less terrible and dangerous to use.
-`define NUM_CPUS 2
-// `define HAS_CPU3
+`define NUM_CPUS 3
+`define HAS_CPU3
 // `define HAS_CPU4
 
 module softshell_top (
@@ -173,7 +173,7 @@ module softshell_top (
   // Generate the CPUs
   genvar i;
   generate
-    for (i = 0; i < `NUM_CPUS; i = i + 1) begin
+    for (i = 0; i < `NUM_CPUS; i = i + 1) begin : cpus
       assign cpu_reset[i] = la_data_in[i + 1];
 
       rv_core #(
@@ -620,10 +620,10 @@ module softshell_top (
 `endif
   // assign uart_rx = io_in_internal[24];
 
-  assign flash_io0_di = io_in_internal[28];
-  assign flash_io1_di = io_in_internal[29];
-  assign flash_io2_di = io_in_internal[30];
-  assign flash_io3_di = io_in_internal[31];
+  assign flash_io0_di = io_in_internal[10-6];
+  assign flash_io1_di = io_in_internal[11-6];
+  assign flash_io2_di = io_in_internal[12-6];
+  assign flash_io3_di = io_in_internal[13-6];
 
   assign io_out[5:0] = 6'b0;
   assign io_oeb[5:0] = {6{1'b1}};
@@ -643,8 +643,9 @@ module softshell_top (
 `ifdef HAS_CPU4
                            gpio_out[3] |
 `endif
-                           {flash_io3_do, flash_io2_do, flash_io1_do,
-                            flash_io0_do, flash_clk, flash_csb, 26'b0} |
+                           {24'b0, flash_io3_do, flash_io2_do,
+                            flash_io1_do, flash_io0_do, flash_clk,
+                            flash_csb, 2'b0} |
                            pinmux_gpio_out;
                            //{6'b0, uart_tx, 25'b0};
   assign io_oeb_internal = gpio_oeb[0] &
@@ -655,9 +656,9 @@ module softshell_top (
 `ifdef HAS_CPU4
                            gpio_oeb[3] &
 `endif
-                           {flash_io3_oeb, flash_io2_oeb, flash_io1_oeb,
-                            flash_io0_oeb, flash_clk_oeb, flash_csb_oeb,
-                            {26{1'b1}}} &
+                           {{24{1'b1}}, flash_io3_oeb, flash_io2_oeb,
+                            flash_io1_oeb, flash_io0_oeb, flash_clk_oeb,
+                            flash_csb_oeb, 2'b11} &
                            pinmux_gpio_oeb;
                            //~{6'b0, uart_enabled, 25'b0};
 

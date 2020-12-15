@@ -69,8 +69,9 @@ module softshell_top_tb;
 
   reg [`MPRJ_IO_PADS-1:0] io_in_reg;
 
-  // Exclude flash pads for now.
-  assign io_in[30:0] = io_in_reg;
+  // Exclude flash pad and UART loopback.
+  assign io_in[37:32] = io_in_reg[37:32];
+  assign io_in[30:14] = io_in_reg[30:14];
 
   // UART loopback pin 32 (RX) to pin 31 (TX)
   assign io_in[31] = (!io_oeb[30]) ? (io_out[30]) : (1'bz);
@@ -133,11 +134,26 @@ module softshell_top_tb;
     la_data_in[4:1] = 4'b1110;
 
     $display("Waiting for CPU GPIO toggles");
-    wait(io_out[7+6:0+6] != 8'h00);
+    // wait(io_out[7+14:0+14] != 8'h00);
+    wait(io_out[37] == 1'b1);
 
     $display("Finished");
     $finish;
   end
+
+`ifndef GL
+  always begin
+    wait(uut.cpus[0].core.trap == 1'b1);
+    $error("CPU0 TRAP!");
+    $finish;
+  end
+
+  always begin
+    wait(uut.cpus[1].core.trap == 1'b1);
+    $error("CPU1 TRAP!");
+    $finish;
+  end
+`endif
 
 `ifdef GL
   user_proj_example uut (
@@ -177,16 +193,16 @@ module softshell_top_tb;
   wire flash_io2;
   wire flash_io3;
 
-  assign flash_csb = (io_oeb[32] == 1'b0) ? (io_out[32]) : (1'bz);
-  assign flash_clk = (io_oeb[33] == 1'b0) ? (io_out[33]) : (1'bz);
-  assign flash_io0 = (io_oeb[34] == 1'b0) ? (io_out[34]) : (1'bz);
-  assign flash_io1 = (io_oeb[35] == 1'b0) ? (io_out[35]) : (1'bz);
-  assign flash_io2 = (io_oeb[36] == 1'b0) ? (io_out[36]) : (1'bz);
-  assign flash_io3 = (io_oeb[37] == 1'b0) ? (io_out[37]) : (1'bz);
-  assign io_in[34] = flash_io0;
-  assign io_in[35] = flash_io1;
-  assign io_in[36] = flash_io2;
-  assign io_in[37] = flash_io3;
+  assign flash_csb = (io_oeb[8] == 1'b0) ? (io_out[8]) : (1'bz);
+  assign flash_clk = (io_oeb[9] == 1'b0) ? (io_out[9]) : (1'bz);
+  assign flash_io0 = (io_oeb[10] == 1'b0) ? (io_out[10]) : (1'bz);
+  assign flash_io1 = (io_oeb[11] == 1'b0) ? (io_out[11]) : (1'bz);
+  assign flash_io2 = (io_oeb[12] == 1'b0) ? (io_out[12]) : (1'bz);
+  assign flash_io3 = (io_oeb[13] == 1'b0) ? (io_out[13]) : (1'bz);
+  assign io_in[10] = flash_io0;
+  assign io_in[11] = flash_io1;
+  assign io_in[12] = flash_io2;
+  assign io_in[13] = flash_io3;
 
   spiflash flash_model (
     .csb(flash_csb),
