@@ -41,8 +41,8 @@ set ::env(FP_PDN_CORE_RING) 0
 #set ::env(GLB_RT_ALLOW_CONGESTION) 1
 set ::env(GLB_RT_MAXLAYER) 5
 
-# Was using 0.4, but occassionally get ~5 magic DRC violations for metal loops.
-set ::env(PL_TARGET_DENSITY) 0.30
+# 0.4 results in shorts, 0.35 - 0.3 sometimes results in metal loops due to routing.
+set ::env(PL_TARGET_DENSITY) 0.38
 
 # Don't use met5.
 set ::env(GLB_RT_OBS) "met5 0 0 2500 3100"
