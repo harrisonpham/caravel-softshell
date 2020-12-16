@@ -27,7 +27,7 @@ set ::env(VERILOG_FILES) "\
 #	$script_dir/../../softshell"
 
 # For the manually instantiated buffers in softshell_top.
-set ::env(SYNTH_READ_BLACKBOX_LIB) 1
+# set ::env(SYNTH_READ_BLACKBOX_LIB) 1
 
 set ::env(CLOCK_PORT) "wb_clk_i"
 #set ::env(CLOCK_NET) "softshell.wb_clk_i"
@@ -50,7 +50,7 @@ set ::env(GLB_RT_OBS) "met5 0 0 2500 3100"
 # Diodes inserted using interactive.tcl.
 set ::env(DIODE_INSERTION_STRATEGY) 0
 
-set ::env(ROUTING_CORES) 11
+set ::env(ROUTING_CORES) 6
 
 set ::env(FP_PIN_ORDER_CFG) $script_dir/pin_order.cfg
 # set ::env(FP_CONTEXT_DEF) $script_dir/../user_project_wrapper/runs/user_project_wrapper/tmp/floorplan/ioPlacer.def.macro_placement.def

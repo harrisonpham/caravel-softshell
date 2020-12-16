@@ -665,34 +665,37 @@ module softshell_top (
   wire [31:0] io_out_internal_buf;
   wire [31:0] io_oeb_internal_buf;
 
-  // Hack to manually insert buffer so LVS is happy.
-  // TODO(hdpham): Wrap this to make non-technology specific.
-  generate
-    for (i = 0; i < 32; i = i + 1) begin
-      sky130_fd_sc_hd__buf_8 out_buf (
-`ifdef SIM
-        // TODO(hdpham): Figure out why the behavioral models don't work.
-        .VPWR(1'b1),
-        .VGND(1'b0),
-        .VPB(1'b1),
-        .VNB(1'b0),
-`endif
-        .X(io_out_internal_buf[i]),
-        .A(io_out_internal[i])
-      );
+//   // Hack to manually insert buffer so LVS is happy.
+//   // TODO(hdpham): Wrap this to make non-technology specific.
+//   generate
+//     for (i = 0; i < 32; i = i + 1) begin
+//       sky130_fd_sc_hd__buf_8 out_buf (
+// `ifdef SIM
+//         // TODO(hdpham): Figure out why the behavioral models don't work.
+//         .VPWR(1'b1),
+//         .VGND(1'b0),
+//         .VPB(1'b1),
+//         .VNB(1'b0),
+// `endif
+//         .X(io_out_internal_buf[i]),
+//         .A(io_out_internal[i])
+//       );
 
-      sky130_fd_sc_hd__buf_8 oeb_buf (
-`ifdef SIM
-        .VPWR(1'b1),
-        .VGND(1'b0),
-        .VPB(1'b1),
-        .VNB(1'b0),
-`endif
-        .X(io_oeb_internal_buf[i]),
-        .A(io_oeb_internal[i])
-      );
-    end
-  endgenerate
+//       sky130_fd_sc_hd__buf_8 oeb_buf (
+// `ifdef SIM
+//         .VPWR(1'b1),
+//         .VGND(1'b0),
+//         .VPB(1'b1),
+//         .VNB(1'b0),
+// `endif
+//         .X(io_oeb_internal_buf[i]),
+//         .A(io_oeb_internal[i])
+//       );
+//     end
+//   endgenerate
+
+  assign io_out_internal_buf = io_out_internal;
+  assign io_oeb_internal_buf = io_oeb_internal;
 
   assign io_out[37:6] = io_out_internal_buf;
   assign io_oeb[37:6] = io_oeb_internal_buf;
