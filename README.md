@@ -1,6 +1,6 @@
 # Softshell
 
-Multicore RISC-V CPU for developing software defined peripherals.
+Multicore RISC-V MCU for developing software defined peripherals.
 
 ## Configuration
 
@@ -16,7 +16,45 @@ Multicore RISC-V CPU for developing software defined peripherals.
 - UART
 - Pinmux crossbar
 
-### Pins and Debug
+## Memory Map
+
+### CPU Private
+```
+// Local memory (for stack, etc).
+parameter CCM_ADDR_MASK     = 32'hffff_0000;
+parameter CCM_BASE_ADDR     = 32'h0000_0000;
+
+// Local GPIO peripheral.
+parameter GPIO_ADDR_MASK    = 32'hffff_0000;
+parameter GPIO_BASE_ADDR    = 32'h2000_0000;
+
+// Access to the shared peripheral space.
+parameter SHARED_ADDR_MASK  = 32'hff00_0000;
+parameter SHARED_BASE_ADDR  = 32'h3000_0000;
+```
+
+### Shared
+```
+// Softshell base address (used for filtering addresses from Caravel).
+parameter SOFTSHELL_MASK    = 32'hff00_0000;
+parameter SOFTSHELL_ADDR    = 32'h3000_0000;
+
+// Slave base addresses.
+parameter SHARED_RAM_MASK   = 32'hfff0_0000;
+parameter SHARED_RAM_ADDR   = 32'h3000_0000;
+
+parameter SHARED_FLASH_MASK = 32'hfff0_0000;
+parameter SHARED_FLASH_ADDR = 32'h3040_0000;
+
+parameter FLASH_CONFIG_MASK = 32'hffff_0000;
+parameter FLASH_CONFIG_ADDR = 32'h3080_0000;
+parameter PINMUX_ADDR_MASK  = 32'hffff_0000;
+parameter PINMUX_BASE_ADDR  = 32'h3081_0000;
+parameter UART0_ADDR_MASK   = 32'hffff_0000;
+parameter UART0_BASE_ADDR   = 32'h3082_0000;
+```
+
+## Pins and Debug
 
 ```
 User IOs
