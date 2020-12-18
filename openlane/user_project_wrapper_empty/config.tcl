@@ -32,6 +32,9 @@ set ::env(GLB_RT_MINLAYER) 2
 set ::env(GLB_RT_MAXLAYER) 4
 set ::env(GLB_RT_OBS) "li1 0 0 2920 3520, met4 0 0 2920 3520, met5 0 0 2920 3520"
 
+# Try really hard to route.
+set ::env(ROUTING_OPT_ITERS) 100
+
 # Need to fix a FastRoute bug for this to work, but it's good
 # for a sense of "isolation"
 set ::env(MAGIC_ZEROIZE_ORIGIN) 0
