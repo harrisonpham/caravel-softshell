@@ -1,3 +1,20 @@
+// Softshell testbench.
+//
+// SPDX-FileCopyrightText: (c) 2020 Harrison Pham <harrison@harrisonpham.com>
+// SPDX-License-Identifier: Apache-2.0
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 `timescale 1 ns / 1 ps
 
 `define MPRJ_IO_PADS 38
@@ -6,6 +23,14 @@
 `define USE_OPENRAM
 `define MEM_WORDS 256
 `define COLS 1
+
+`ifdef GL
+  // NOTE: Make sure to keep this in sync with the actual RTL.
+  `define SHARED_MEM_WORDS 512
+  `define MEM_TEST_STEP_SIZE_WORDS 123
+`else
+  `define MEM_TEST_STEP_SIZE_WORDS 1
+`endif
 
 // Models.
 // `include "third_party/sky130/models/sram_1rw1r_32_256_8_sky130.v"
@@ -118,13 +143,15 @@ module softshell_top_tb;
       read_assert(address, data);
       read_assert(address + 4, ~data);
     end
-    for (i = 0; i < `SHARED_MEM_WORDS * 4; i = i + 4) begin
+    for (i = 0; i < `SHARED_MEM_WORDS * 4;
+         i = i + 4 * MEM_TEST_STEP_SIZE_WORDS) begin
       address = 32'h3000_0000 + i;
       data = i;
       write(address, data);
       read_assert(address, data);
     end
-    for (i = 0; i < `SHARED_MEM_WORDS * 4; i = i + 4) begin
+    for (i = 0; i < `SHARED_MEM_WORDS * 4;
+         i = i + 4 * MEM_TEST_STEP_SIZE_WORDS) begin
       address = 32'h3000_0000 + i;
       data = i;
       read_assert(address, data);
