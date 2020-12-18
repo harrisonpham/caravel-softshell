@@ -1,149 +1,177 @@
-<!---
-# SPDX-FileCopyrightText: 2020 Efabless Corporation
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# SPDX-License-Identifier: Apache-2.0
--->
-# CIIC Harness  
+# Softshell
 
-A template SoC for Google SKY130 free shuttles. It is still WIP. The current SoC architecture is given below.
+Multicore RISC-V MCU for developing software defined peripherals.  This design
+is targetted for the first Google-sponsored MPW shuttle Nov/Dec 2020.
 
-<p align="center">
-<img src="/doc/ciic_harness.png" width="75%" height="75%"> 
-</p>
+## Configuration
 
+### CPU / Private Peripheral Configuration
+- 3 x 50 MHz picorv32 cores
+- 32 word private "core coupled" memory for stack
+- 32-bit private GPIO peripheral
+- "flexio" custom instruction (high speed configurable 2/4/8-bit shift register)
 
-## Getting Started:
+### Shared Peripherals
+- Round-robin arbiter
+- 512 word (2KB) shared memory
+- XIP QSPI flash controller
+- UART
+- Pinmux crossbar
 
-* For information on tooling and versioning, please refer to [this][1].
+## Memory Map
 
-Start by cloning the repo and uncompressing the files.
-```bash
-git clone https://github.com/efabless/caravel.git
-cd caravel
-make uncompress
+### CPU Private
+```
+// Local memory (for stack, etc).
+parameter CCM_ADDR_MASK     = 32'hffff_0000;
+parameter CCM_BASE_ADDR     = 32'h0000_0000;
+
+// Local GPIO peripheral.
+parameter GPIO_ADDR_MASK    = 32'hffff_0000;
+parameter GPIO_BASE_ADDR    = 32'h2000_0000;
+
+// Access to the shared peripheral space.
+parameter SHARED_ADDR_MASK  = 32'hff00_0000;
+parameter SHARED_BASE_ADDR  = 32'h3000_0000;
 ```
 
-Then you need to install the open_pdks prerequisite:
- - [Magic VLSI Layout Tool](http://opencircuitdesign.com/magic/index.html) is needed to run open_pdks -- version >= 8.3.60*
+### Shared
+```
+// Softshell base address (used for filtering addresses from Caravel).
+parameter SOFTSHELL_MASK    = 32'hff00_0000;
+parameter SOFTSHELL_ADDR    = 32'h3000_0000;
 
- > \* Note: You can avoid the need for the magic prerequisite by using the openlane docker to do the installation step in open_pdks. This could be done by cloning [openlane](https://github.com/efabless/openlane/tree/master) and following the instructions given there to use the Makefile.
+// Slave base addresses.
+parameter SHARED_RAM_MASK   = 32'hfff0_0000;
+parameter SHARED_RAM_ADDR   = 32'h3000_0000;
 
-Install the required version of the PDK by running the following commands:
+parameter SHARED_FLASH_MASK = 32'hfff0_0000;
+parameter SHARED_FLASH_ADDR = 32'h3040_0000;
 
-```bash
-export PDK_ROOT=<The place where you want to install the pdk>
-make pdk
+parameter FLASH_CONFIG_MASK = 32'hffff_0000;
+parameter FLASH_CONFIG_ADDR = 32'h3080_0000;
+parameter PINMUX_ADDR_MASK  = 32'hffff_0000;
+parameter PINMUX_BASE_ADDR  = 32'h3081_0000;
+parameter UART0_ADDR_MASK   = 32'hffff_0000;
+parameter UART0_BASE_ADDR   = 32'h3082_0000;
 ```
 
-Then, you can learn more about the caravel chip by watching these video:
-- Caravel User Project Features -- https://youtu.be/zJhnmilXGPo
-- Aboard Caravel -- How to put your design on Caravel? -- https://youtu.be/9QV8SDelURk
-- Things to Clarify About Caravel -- What versions to use with Caravel? -- https://youtu.be/-LZ522mxXMw
-    - You could only use openlane:rc6
-    - Make sure you have the commit hashes provided here inside the [Makefile](./Makefile)
-## Aboard Caravel:
+## Pins and Debug
 
-Your area is the full user_project_wrapper, so feel free to add your project there or create a differnt macro and harden it seperately then insert it into the user_project_wrapper. For example, if your design is analog or you're using a different tool other than OpenLANE.
+```
+User IOs
+--------
+io[37:6] - Mapped to 32-bit pinmux (gpios, flexio, uart)
+io[8] - Flash CSB       (muxable to Caravel passthru for programming)
+io[9] - Flash CLK       (muxable to Caravel passthru for programming)
+io[10] - Flash DIO0     (muxable to Caravel passthru for programming)
+io[11] - Flash DIO1     (muxable to Caravel passthru for programming)
+io[12] - Flash DIO2
+io[13] - Flash DIO3
 
-If you will use OpenLANE to harden your design, go through the instructions in this [README.md][0].
+Wishbone Access from Caravel
+----------------------------
+Access to entire shared memory space (RAM, XIP Flash, etc)
 
-You must copy your synthesized gate-level-netlist for `user_project_wrapper` to `verilog/gl/` and overwrite `user_project_wrapper.v`. Otherwise, you can point to it in [info.yaml](info.yaml).
+Debug from Caravel
+------------------
+la_data_in[0] - Wishbone reset (also resets CPUs)
+la_data_in[1] - CPU0 reset
+la_data_in[2] - CPU1 reset
+la_data_in[3] - CPU2 reset (if implemented)
+la_data_in[4] - CPU3 reset (if implemented)
 
-> Note: If you're using openlane to harden your design, this should happen automatically.
+la_data_out[31:0] - GPIO out
+la_data_out[63:32] - GPIO in
 
-Then, you will need to put your design aboard the Caravel chip. Make sure you have the following:
-
-- [Magic VLSI Layout Tool](http://opencircuitdesign.com/magic/index.html) installed on your machine. We may provide a Dockerized version later.\*
-- You have your user_project_wrapper.gds under `./gds/` in the Caravel directory.
-
- > \* **Note:** You can avoid the need for the magic prerequisite by using the openlane docker to run the make step. This [section](#running-make-using-openlane-magic) shows how.
-
-Run the following command:
-
-```bash
-export PDK_ROOT=<The place where the installed pdk resides. The same PDK_ROOT used in the pdk installation step>
-make
+Note: CPU resets are not synchronized while the wishbone reset is.
 ```
 
-This should merge the GDSes using magic and you'll end up with your version of `./gds/caravel.gds`. You should expect ~90 magic DRC violations with the current "development" state of caravel.
+## Verification
 
-## Running Make using OpenLANE Magic
+The `softshell_top` and `user_proj_example` modules are verified using the
+same testbench.
 
-To use the magic installed inside Openlane to complete the final GDS streaming out step, export the following:
+It performs these basic tests:
+- Memory read/write tests from Caravel SoC wishbone interface.
+- Memory tests from Softshell CPU 0.
+- GPIO in / out tests from Softshell CPU 0.
+- Flexio tests.
+- Flash XIP execution.
 
-```bash
-export PDK_ROOT=<The location where the pdk is installed>
-export OPENLANE_ROOT=<the absolute path to the openlane directory cloned or to be cloned>
-export IMAGE_NAME=<the openlane image name installed on your machine. Preferably openlane:rc6>
-export CARAVEL_PATH=$(pwd)
-```
+Testing execution from each CPU is a manual process requiring manually editing
+the linker script, flash memory load address, and which CPU is released from
+reset in the test bench.  Not holding unused CPUs in reset will cause the X's
+to propagate everywhere in GL sims.
 
-Then, mount the docker:
+1. Build the picorv32 toolchain and install at `/opt/riscv32ic/bin`.  We only
+   need the `riscv32ic` mach.
+2. Configure `PDK_ROOT`.
+3. Run the testbench.
+    ```
+    # For behavioral sims.
+    cd verilog/rtl/softshell/dv && make clean; make
 
-```bash
-docker run -it -v $CARAVEL_PATH:$CARAVEL_PATH -v $OPENLANE_ROOT:/openLANE_flow -v $PDK_ROOT:$PDK_ROOT -e CARAVEL_PATH=$CARAVEL_PATH -e PDK_ROOT=$PDK_ROOT -u $(id -u $USER):$(id -g $USER) $IMAGE_NAME
-```
+    # For GL (this will take a long time).
+    cd verilog/rtl/softshell/dv && make clean; make GL=1
+    ```
 
-Finally, once inside the docker run the following commands:
-```bash
-cd $CARAVEL_PATH
-make
-exit
-```
+There are plans to do a full top level Caravel testbench soon.
 
-This should merge the GDSes using magic and you'll end up with your version of `./gds/caravel.gds`. You should expect ~90 magic DRC violations with the current "development" state of caravel.
+## Building
 
+Due to the limited timeline, this design is built with two different versions
+of openlane / PDKs.  You'll need to have both `mpw-one-a` and `mpw-one-b`
+available on your machine to do a full build.
 
-## IMPORTANT:
+### Softshell `user_proj_example` and Wrapper `user_project_wrapper` Macros
 
-Please make sure to run `make compress` before commiting anything to your repository. Avoid having 2 versions of the gds/user_project_wrapper.gds or gds/caravel.gds one compressed and the other not compressed.
+Requires `mpw-one-a` openlane and PDK.  To make the routing work harder, it's
+preferred to edit the openlane `tritonRoute.param` file and add
+`drouteEndIterNum:${ROUTING_OPT_ITERS}` which we later set to try harder during
+wrapper routing.
 
-## Required Directory Structure
+1. Configure `OPENLANE_ROOT` and `PDK_ROOT` to point to `mpw-one-a` versions.
+2. Harden the macro, this will take 8 - 12 hours on a modern 12 core machine.
+    ```
+    cd openlane && make user_proj_example
+    ```
+3. Review the `final_summary_report.csv` file.  Expect LVS errors only on the
+   output pins of the macro (pin mismatches) and a few antenna violations.
+   There should be zero DRC errors, if you get some you will need to rerun to
+   get a different seed (or manually edit the GDS).  Manually review the
+   log files to confirm that the antenna ratios are reasonable and that any LVS
+   errors are safe (pin mismatches are generally safe, compare the GL netlist
+   and spice extracted netlist to confirm).
+3. Copy the results from the run folder into the appropriate locations.  This is
+   done primarily so it's easy to switch between run snapshots to compare.
+    ```
+    cd openlane/user_proj_example && ./copy_results.sh runs/<result tag>
+    ```
+4. Harden the wrapper macro.
+    ```
+    cd openlane && make user_project_wrapper
+    ```
+5. Review the `final_summary_report.csv` file to confirm 0 DRC/LVS/antenna
+   violations.
 
-- ./gds/ : includes all the gds files used or produced from the project.
-- ./def/ : includes all the def files used or produced from the project.
-- ./lef/ : includes all the lef files used or produced from the project.
-- ./mag/ : includes all the mag files used or produced from the project.
-- ./maglef/ : includes all the maglef files used or produced from the project.
-- ./spi/lvs/ : includes all the maglef files used or produced from the project.
-- ./verilog/dv/ : includes all the simulation test benches and how to run them. 
-- ./verilog/gl/ : includes all the synthesized/elaborated netlists. 
-- ./verilog/rtl/ : includes all the Verilog RTLs and source files.
-- ./openlane/`<macro>`/ : includes all configuration files used to run openlane on your project.
-- info.yaml: includes all the info required in [this example](info.yaml). Please make sure that you are pointing to an elaborated caravel netlist as well as a synthesized gate-level-netlist for the user_project_wrapper
+### Top Level Caravel
 
-## Managment SoC
-The managment SoC runs firmware that can be used to:
-- Configure User Project I/O pads
-- Observe and control User Project signals (through on-chip logic analyzer probes)
-- Control the User Project power supply
+Requires `mpw-one-b` openlane and PDK.  Probably not strictly necessary but
+safest to use what eFabless will use.
 
-The memory map of the management SoC can be found [here](verilog/rtl/README)
+1. Configure `OPENLANE_ROOT` and `PDK_ROOT` to point to `mpw-one-b` versions.
+2. Extract and build the final caravel gds.
+    ```
+    make uncompress && make ship
+    ```
+3. Check results, and recompress.  This will take a while since we use `xz`
+   compression.
+    ```
+    make compress
+    ```
 
-## User Project Area
-This is the user space. It has limited silicon area (TBD, about 3.1mm x 3.8mm) as well as a fixed number of I/O pads (37) and power pads (10).  See [the Caravel  premliminary datasheet](doc/caravel_datasheet.pdf) for details.
-The repository contains a [sample user project](/verilog/rtl/user_proj_example.v) that contains a binary 32-bit up counter.  </br>
+## Caravel Top Level Wrapper Details
 
-<p align="center">
-<img src="/doc/counter_32.png" width="50%" height="50%">
-</p>
-
-The firmware running on the Management Area SoC, configures the I/O pads used by the counter and uses the logic probes to observe/control the counter. Three firmware examples are provided:
-1. Configure the User Project I/O pads as o/p. Observe the counter value in the testbench: [IO_Ports Test](verilog/dv/caravel/user_proj_example/io_ports).
-2. Configure the User Project I/O pads as o/p. Use the Chip LA to load the counter and observe the o/p till it reaches 500: [LA_Test1](verilog/dv/caravel/user_proj_example/la_test1).
-3. Configure the User Project I/O pads as o/p. Use the Chip LA to control the clock source and reset signals and observe the counter value for five clock cylcles:  [LA_Test2](verilog/dv/caravel/user_proj_example/la_test2).
-
-[0]: openlane/README.md
-[1]: mpw-one-b.md
+The top level wrapper for this project is the Caravel harness.  See
+[Caravel Readme](README_caravel.md) for more information.
