@@ -1,0 +1,20 @@
+[tasks]
+prf
+cvr
+
+[options]
+prf: mode prove
+prf: depth 4
+cvr: mode cover
+cvr: depth 32
+multiclock on
+
+[engines]
+smtbmc boolector
+
+[script]
+read -formal -D AFIFO afifo.v
+prep -top afifo
+
+[files]
+../../rtl/afifo.v
