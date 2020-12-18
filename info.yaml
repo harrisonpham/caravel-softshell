@@ -1,5 +1,5 @@
---- 
-project: 
+---
+project:
   description: "Multicore MCU for implementing software defined peripherals."
   foundry: "SkyWater"
   git_url: "https://github.com/harrisonpham/caravel-softshell.git"
@@ -8,10 +8,9 @@ project:
   owner: "Harrison Pham"
   process: "SKY130"
   project_name: "Softshell"
-  tags: 
+  tags:
     - "Open MPW"
-    - "Test Harness"
-  category: "Test Harness"
+  category: "SoC"
   top_level_netlist: "verilog/gl/caravel.v"
   user_level_netlist: "verilog/gl/user_project_wrapper.v"
   version: "1.00"
