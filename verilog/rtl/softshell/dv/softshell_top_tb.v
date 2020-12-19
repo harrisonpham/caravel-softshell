@@ -144,14 +144,14 @@ module softshell_top_tb;
       read_assert(address + 4, ~data);
     end
     for (i = 0; i < `SHARED_MEM_WORDS * 4;
-         i = i + 4 * MEM_TEST_STEP_SIZE_WORDS) begin
+         i = i + 4 * `MEM_TEST_STEP_SIZE_WORDS) begin
       address = 32'h3000_0000 + i;
       data = i;
       write(address, data);
       read_assert(address, data);
     end
     for (i = 0; i < `SHARED_MEM_WORDS * 4;
-         i = i + 4 * MEM_TEST_STEP_SIZE_WORDS) begin
+         i = i + 4 * `MEM_TEST_STEP_SIZE_WORDS) begin
       address = 32'h3000_0000 + i;
       data = i;
       read_assert(address, data);
