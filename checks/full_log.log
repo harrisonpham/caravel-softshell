@@ -1,0 +1,62 @@
+FULL RUN LOG:
+ Uncompressing the gds files
+Step 0 done without fatal errors.
+ Executing Step 1 of 4: Checking License files.
+{{LICENSE COMPLIANCE PASSED}} Apache-2.0 LICENSE file was found in project root
+ No third party libraries found.
+Step 1 done without fatal errors.
+{{SPDX COMPLIANCE WARNING}} Found 313 non-compliant files with the SPDX Standard. Check full log for more information
+SPDX COMPLIANCE: NON-COMPLIANT FILES PREVIEW: ['/mnt/data/workspace/caravel-softshell/README.md', '/mnt/data/workspace/caravel-softshell/openlane/chip_dimensions.txt', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/interactive.tcl', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/config.tcl', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__a32o_4.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__decap_4.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__decap_12.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__buf_8.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__buf_4.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__a2111o_4.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__fill_2.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__and2_4.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__diode_2.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__and4_4.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__a21o_4.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__decap_6.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__decap_3.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__dfxtp_4.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__nor2_4.ext', '/mnt/data/workspace/caravel-softshell/openlane/user_proj_example/runs/16-12_10-43/results/magic/sky130_fd_sc_hd__buf_2.ext']
+ Executing Step 2 of 4: Checking YAML description.
+ YAML file valid!
+Step 2 done without fatal errors.
+ Executing Step 3 of 4: Executing Fuzzy Consistency Checks.
+b'Going into /mnt/data/workspace/caravel-softshell/verilog/rtl'
+b'Removing manifest'
+b'Fetching manifest'
+b'Running sha1sum checks'
+b'Going into /mnt/data/workspace/caravel-softshell/maglef'
+b'Removing manifest'
+b'Fetching manifest'
+b'Running sha1sum checks'
+b'Going into /mnt/data/workspace/caravel-softshell/mag'
+b'Removing manifest'
+b'Fetching manifest'
+b'Running sha1sum checks'
+ Manifest Checks Passed. Caravel Version Matches.
+ Documentation Checks Passed.
+ Makefile Checks Passed.
+instance caravel found
+instance user_project_wrapper found
+Design is complex and contains: 47 modules
+Design is complex and contains: 2 modules
+verilog Consistency Checks Passed.
+ Basic Hierarchy Checks Passed.
+ Running Magic Extractions From GDS...
+user wrapper cell names differences: 
+[]
+user wrapper cell type differences: 
+[]
+toplevel cell names differences: 
+[]
+toplevel cell type differences: 
+[]
+GDS Hierarchy Check Passed
+GDS Checks Passed
+{PROGRESS} Running Pins and Power Checks...
+Pins check passed
+Internal Power Checks Passed!
+ Fuzzy Consistency Checks Passed!
+Step 3 done without fatal errors.
+ Executing Step 4 of 4: Checking DRC Violations.
+ Running DRC Checks...
+Violation Message "Metal4 > 3um spacing to unrelated m4 < 0.4um (met4.5b) "found 6 Times.
+Violation Message "Metal3 > 3um spacing to unrelated m3 < 0.4um (met3.3d) "found 2 Times.
+Violation Message "Can't overlap those layers "found 2 Times.
+Violation Message "Min area of metal2 holes > 0.14um^2 (met2.7) "found 20 Times.
+Violation Message "Metal3 spacing < 0.3um (met3.2) "found 6 Times.
+Violation Message "Metal3 width < 0.3um (met3.1) "found 1 Times.
+Violation Message "Metal1 > 3um spacing to unrelated m1 < 0.28um (met1.3b) "found 17 Times.
+Violation Message "Metal2 > 3um spacing to unrelated m2 < 0.28um (met2.3b) "found 21 Times.
+ DRC Checks on MAG Failed, Reason: Total # of DRC violations is 75
+TEST FAILED AT STEP 4
