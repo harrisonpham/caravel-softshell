@@ -1,0 +1,100 @@
+Wed Dec 16 10:43:49 UTC 2020 - Executing "/openLANE_flow/scripts/mergeLef.py -i /mnt/data/workspace/pdk/sky130A/libs.ref/sky130_fd_sc_hd/techlef/sky130_fd_sc_hd.tlef {/mnt/data/workspace/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_fd_sc_hd.lef /mnt/data/workspace/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lef/sky130_ef_sc_hd__fakediode_2.lef} -o /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged_unpadded.lef |& tee >&@stdout"
+
+Wed Dec 16 10:43:49 UTC 2020 - Executing "/openLANE_flow/scripts/libtrim.pl /mnt/data/workspace/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib /mnt/data/workspace/pdk/sky130A/libs.tech/openlane/sky130_fd_sc_hd/no_synth.cells > /project/openlane/user_proj_example/runs/16-12_10-43/tmp/trimmed.lib"
+
+Wed Dec 16 10:43:50 UTC 2020 - Executing "yosys -c /openLANE_flow/scripts/synth.tcl -l /project/openlane/user_proj_example/runs/16-12_10-43/logs/synthesis/yosys.log |& tee >&@stdout"
+
+Wed Dec 16 10:52:34 UTC 2020 - Executing "sed -i -e {s/\(set ::env(CURRENT_NETLIST)\).*/\1 \/project\/openlane\/user_proj_example\/runs\/16-12_10-43\/results\/synthesis\/user_proj_example.synthesis.v/} /project/openlane/user_proj_example/runs/16-12_10-43/config.tcl"
+
+Wed Dec 16 10:52:34 UTC 2020 - Executing "sed -i -e {s/\(set ::env(PREV_NETLIST)\).*/\1 0/} /project/openlane/user_proj_example/runs/16-12_10-43/config.tcl"
+
+Wed Dec 16 10:52:34 UTC 2020 - Executing "sed -ie /defparam/d /project/openlane/user_proj_example/runs/16-12_10-43/results/synthesis/user_proj_example.synthesis.v"
+
+Wed Dec 16 10:52:36 UTC 2020 - Executing "sta /openLANE_flow/scripts/sta.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/synthesis/opensta.log"
+
+Wed Dec 16 10:52:47 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_floorplan.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/floorplan/verilog2def.openroad.log"
+
+Wed Dec 16 10:52:54 UTC 2020 - Executing "python3 /openLANE_flow/scripts/io_place.py --input-lef /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged.lef --input-def /project/openlane/user_proj_example/runs/16-12_10-43/tmp/floorplan/verilog2def_openroad.def --config /project/openlane/user_proj_example/pin_order.cfg --hor-layer 4 --ver-layer 3 --ver-width-mult 2 --hor-width-mult 2 --hor-extension -1 --ver-extension -1 --length 4 -o /project/openlane/user_proj_example/runs/16-12_10-43/tmp/floorplan/ioPlacer.def |& tee /project/openlane/user_proj_example/runs/16-12_10-43/logs/floorplan/place_io_ol.log >&@stdout"
+
+Wed Dec 16 10:53:02 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_tapcell.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/floorplan/tapcell.log"
+
+Wed Dec 16 10:53:25 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/new_pdn.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/floorplan/pdn.log"
+
+Wed Dec 16 10:53:53 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_replace.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/placement/replace.log"
+
+Wed Dec 16 10:57:01 UTC 2020 - Executing "/openLANE_flow/scripts/libtrim.pl /mnt/data/workspace/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__ss_100C_1v60.lib /mnt/data/workspace/pdk/sky130A/libs.tech/openlane/sky130_fd_sc_hd/no_synth.cells > /project/openlane/user_proj_example/runs/16-12_10-43/tmp/opt.lib"
+
+Wed Dec 16 10:57:01 UTC 2020 - Executing "Psn /openLANE_flow/scripts/openPhySyn.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/placement/openphysyn.log"
+
+Wed Dec 16 11:00:15 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_write_verilog.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/write_verilog.log"
+
+Wed Dec 16 11:00:21 UTC 2020 - Executing "sed -i -e {s/\(set ::env(CURRENT_NETLIST)\).*/\1 \/project\/openlane\/user_proj_example\/runs\/16-12_10-43\/results\/synthesis\/user_proj_example.synthesis_optimized.v/} /project/openlane/user_proj_example/runs/16-12_10-43/config.tcl"
+
+Wed Dec 16 11:00:21 UTC 2020 - Executing "sed -i -e {s/\(set ::env(PREV_NETLIST)\).*/\1 \/project\/openlane\/user_proj_example\/runs\/16-12_10-43\/results\/synthesis\/user_proj_example.synthesis.v/} /project/openlane/user_proj_example/runs/16-12_10-43/config.tcl"
+
+Wed Dec 16 11:00:21 UTC 2020 - Executing "sta /openLANE_flow/scripts/sta.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/synthesis/opensta_post_openphysyn.log"
+
+Wed Dec 16 11:00:32 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_opendp.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/placement/opendp.log"
+
+Wed Dec 16 11:00:41 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_cts.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/cts/cts.log"
+
+Wed Dec 16 11:02:43 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_write_verilog.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/write_verilog.log"
+
+Wed Dec 16 11:02:49 UTC 2020 - Executing "sed -i -e {s/\(set ::env(CURRENT_NETLIST)\).*/\1 \/project\/openlane\/user_proj_example\/runs\/16-12_10-43\/results\/synthesis\/user_proj_example.synthesis_cts.v/} /project/openlane/user_proj_example/runs/16-12_10-43/config.tcl"
+
+Wed Dec 16 11:02:49 UTC 2020 - Executing "sed -i -e {s/\(set ::env(PREV_NETLIST)\).*/\1 \/project\/openlane\/user_proj_example\/runs\/16-12_10-43\/results\/synthesis\/user_proj_example.synthesis_optimized.v/} /project/openlane/user_proj_example/runs/16-12_10-43/config.tcl"
+
+Wed Dec 16 11:02:49 UTC 2020 - Executing "python3 /project/openlane/user_proj_example/scripts/place_diodes.py -l /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged.lef -id /project/openlane/user_proj_example/runs/16-12_10-43/results/cts/user_proj_example.cts.def -o /project/openlane/user_proj_example/runs/16-12_10-43/tmp/placement/user_proj_example.diodes.def |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/diodes.log"
+
+Wed Dec 16 11:03:20 UTC 2020 - Executing "opendp -lef /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged.lef -def /project/openlane/user_proj_example/runs/16-12_10-43/tmp/placement/user_proj_example.diodes.def -output_def /project/openlane/user_proj_example/runs/16-12_10-43/results/placement/user_proj_example.placement.def |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/placement/opendp.log"
+
+Wed Dec 16 11:03:36 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_route.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/routing/fastroute.log"
+
+Wed Dec 16 11:05:00 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_fill.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/routing/addspacers.log"
+
+Wed Dec 16 11:05:10 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_write_verilog.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/write_verilog.log"
+
+Wed Dec 16 11:05:22 UTC 2020 - Executing "sed -i -e {s/\(set ::env(CURRENT_NETLIST)\).*/\1 \/project\/openlane\/user_proj_example\/runs\/16-12_10-43\/results\/synthesis\/user_proj_example.synthesis_preroute.v/} /project/openlane/user_proj_example/runs/16-12_10-43/config.tcl"
+
+Wed Dec 16 11:05:22 UTC 2020 - Executing "sed -i -e {s/\(set ::env(PREV_NETLIST)\).*/\1 \/project\/openlane\/user_proj_example\/runs\/16-12_10-43\/results\/synthesis\/user_proj_example.synthesis_cts.v/} /project/openlane/user_proj_example/runs/16-12_10-43/config.tcl"
+
+Wed Dec 16 11:05:22 UTC 2020 - Executing "python3 /openLANE_flow/scripts/addObstruction.py -d /project/openlane/user_proj_example/runs/16-12_10-43/tmp/routing/addspacers.def -l /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged_unpadded.lef -obs core_obs_0 -ln met5 -px 0 -py 0 -sw 2500 -sh 3100 -db 1000 -f"
+
+Wed Dec 16 11:05:23 UTC 2020 - Executing "envsubst < /openLANE_flow/scripts/tritonRoute.param > /project/openlane/user_proj_example/runs/16-12_10-43/tmp/routing/tritonRoute.param"
+
+Wed Dec 16 11:05:23 UTC 2020 - Executing "TritonRoute /project/openlane/user_proj_example/runs/16-12_10-43/tmp/routing/tritonRoute.param |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/routing/tritonRoute.log"
+
+Wed Dec 16 13:32:50 UTC 2020 - Executing "python3 /openLANE_flow/scripts/tr2klayout.py -i /project/openlane/user_proj_example/runs/16-12_10-43/reports/routing/tritonRoute.drc -o /project/openlane/user_proj_example/runs/16-12_10-43/reports/routing/tritonRoute.klayout.xml --design-name user_proj_example"
+
+Wed Dec 16 13:32:50 UTC 2020 - Executing "python3 /openLANE_flow/scripts/spef_extractor/main.py -l /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged_unpadded.lef -d /project/openlane/user_proj_example/runs/16-12_10-43/results/routing/user_proj_example.def -mw L -ec 1 |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/routing/spef_extraction.log"
+
+Wed Dec 16 13:35:43 UTC 2020 - Executing "sta /openLANE_flow/scripts/sta.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/synthesis/opensta_spef.log"
+
+Wed Dec 16 13:36:21 UTC 2020 - Executing "python3 /openLANE_flow/scripts/write_powered_def.py -d /project/openlane/user_proj_example/runs/16-12_10-43/results/routing/user_proj_example.def -l /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged.lef -v VPWR -g VGND -o /project/openlane/user_proj_example/runs/16-12_10-43/tmp/routing/user_proj_example.powered.def |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/lvs/write_powered_verilog.log"
+
+Wed Dec 16 13:37:11 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_write_verilog.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/write_verilog.log"
+
+Wed Dec 16 13:37:34 UTC 2020 - Executing "yosys -c /openLANE_flow/scripts/yosys_rewrite_verilog.tcl -l /project/openlane/user_proj_example/runs/16-12_10-43/logs/synthesis/yosys_rewrite_verilog.log"
+
+Wed Dec 16 14:50:14 UTC 2020 - Executing "sed -i -e {s/\(set ::env(CURRENT_NETLIST)\).*/\1 \/project\/openlane\/user_proj_example\/runs\/16-12_10-43\/results\/lvs\/user_proj_example.lvs.powered.v/} /project/openlane/user_proj_example/runs/16-12_10-43/config.tcl"
+
+Wed Dec 16 14:50:14 UTC 2020 - Executing "sed -i -e {s/\(set ::env(PREV_NETLIST)\).*/\1 \/project\/openlane\/user_proj_example\/runs\/16-12_10-43\/results\/synthesis\/user_proj_example.synthesis_preroute.v/} /project/openlane/user_proj_example/runs/16-12_10-43/config.tcl"
+
+Wed Dec 16 14:50:14 UTC 2020 - Executing "magic -noconsole -dnull -rcfile /mnt/data/workspace/pdk/sky130A/libs.tech/magic/sky130A.magicrc /openLANE_flow/scripts/magic/mag_lef_gds.tcl </dev/null |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/magic/magic.log"
+
+Wed Dec 16 15:07:52 UTC 2020 - Executing "magic -noconsole -dnull -rcfile /mnt/data/workspace/pdk/sky130A/libs.tech/magic/sky130A.magicrc /openLANE_flow/scripts/magic/maglef.tcl </dev/null |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/magic/magic.maglef.log"
+
+Wed Dec 16 15:07:52 UTC 2020 - Executing "magic -noconsole -dnull -rcfile /mnt/data/workspace/pdk/sky130A/libs.tech/magic/sky130A.magicrc /project/openlane/user_proj_example/runs/16-12_10-43/tmp/magic_spice.tcl </dev/null |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/magic/magic_spice.log"
+
+Wed Dec 16 17:05:32 UTC 2020 - Executing "magic -noconsole -dnull -rcfile /mnt/data/workspace/pdk/sky130A/libs.tech/magic/sky130A.magicrc /openLANE_flow/scripts/magic/drc.tcl </dev/null |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/magic/magic.drc.log"
+
+Wed Dec 16 18:04:09 UTC 2020 - Executing "netgen -batch lvs {/project/openlane/user_proj_example/runs/16-12_10-43/results/magic/user_proj_example.spice user_proj_example} {/project/openlane/user_proj_example/runs/16-12_10-43/results/lvs/user_proj_example.lvs.powered.v user_proj_example} /mnt/data/workspace/pdk/sky130A/libs.tech/netgen/sky130A_setup.tcl /project/openlane/user_proj_example/runs/16-12_10-43/results/lvs/user_proj_example.lvs.log -json |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/lvs/lvs.log"
+
+Wed Dec 16 20:46:34 UTC 2020 - Executing "openroad -exit /openLANE_flow/scripts/openroad/or_antenna_check.tcl |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/routing/or_antenna.log"
+
+Wed Dec 16 20:47:17 UTC 2020 - Executing "python3 /openLANE_flow/report_generation_wrapper.py -d /project/openlane/user_proj_example -dn user_proj_example -t 16-12_10-43 -o /project/openlane/user_proj_example/runs/16-12_10-43/reports/final_summary_report.csv -r /project/openlane/user_proj_example/runs/16-12_10-43"
+
+Wed Dec 16 20:47:17 UTC 2020 - Executing "magic -noconsole -dnull -rcfile /mnt/data/workspace/pdk/sky130A/libs.tech/magic/sky130A.magicrc /project/openlane/user_proj_example/runs/16-12_10-43/tmp/magic_antenna.tcl </dev/null |& tee >&@stdout /project/openlane/user_proj_example/runs/16-12_10-43/logs/magic/magic_antenna.log"
+
+Thu Dec 17 02:04:34 UTC 2020 - Executing "awk {/Cell:/ {print $2}} /project/openlane/user_proj_example/runs/16-12_10-43/logs/magic/magic_antenna.log > /project/openlane/user_proj_example/runs/16-12_10-43/reports/magic/magic.antenna_violators.rpt"
+

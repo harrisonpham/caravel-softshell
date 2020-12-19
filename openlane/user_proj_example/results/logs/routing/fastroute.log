@@ -1,0 +1,217 @@
+OpenROAD 0.9.0 d03ebfc244
+This program is licensed under the BSD-3 license. See the LICENSE file for details. 
+Components of this program may be licensed under more restrictive licenses which must be honored.
+Error: cannot open '/.openroad'.
+Warning: /mnt/data/workspace/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib, line 31 default_operating_condition tt_025C_1v80 not found.
+Notice 0: Reading LEF file:  /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged_unpadded.lef
+Notice 0:     Created 13 technology layers
+Notice 0:     Created 25 technology vias
+Notice 0:     Created 438 library cells
+Notice 0: Finished LEF file:  /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged_unpadded.lef
+Notice 0: 
+Reading DEF file: /project/openlane/user_proj_example/runs/16-12_10-43/results/placement/user_proj_example.placement.def
+Notice 0: Design: user_proj_example
+Notice 0: 		Created 100000 Insts
+Notice 0: 		Created 200000 Insts
+Notice 0: 		Created 300000 Insts
+Notice 0: 		Created 400000 Insts
+Notice 0: 		Created 100000 Nets
+Notice 0:     Created 606 pins.
+Notice 0:     Created 420720 components and 2213772 component-terminals.
+Notice 0:     Created 2 special nets and 0 connections.
+Notice 0:     Created 192139 nets and 731343 connections.
+Notice 0: Finished DEF file: /project/openlane/user_proj_example/runs/16-12_10-43/results/placement/user_proj_example.placement.def
+[PARAMS] Min routing layer: 2
+[PARAMS] Max routing layer: 5
+[PARAMS] Global adjustment: 0
+[PARAMS] Unidirectional routing: 1
+[PARAMS] Grid origin: (-1, -1)
+[INFO] #DB Obstructions: 0
+[INFO] #DB Obstacles: 10383302
+[INFO] #DB Macros: 0
+[INFO] Found 0 clock nets
+[INFO] Minimum degree: 2
+[INFO] Maximum degree: 91
+[INFO] Processing 7357819 obstacles on layer 1
+[INFO] Processing 1344048 obstacles on layer 2
+[INFO] Processing 33 obstacles on layer 5
+[INFO] Reducing resources of layer 1 by 99%
+[INFO] WIRELEN : 1950149, WIRELEN1 : 0
+[INFO] NumSeg  : 452832
+[INFO] NumShift: 0
+First L Route
+[INFO] WIRELEN : 1954567, WIRELEN1 : 1954567
+[INFO] NumSeg  : 451716
+[INFO] NumShift: 13309
+[Overflow Report] Total hCap    : 4187241
+[Overflow Report] Total vCap    : 3555840
+[Overflow Report] Total Usage   : 1954567
+[Overflow Report] Max H Overflow: 0
+[Overflow Report] Max V Overflow: 5
+[Overflow Report] Max Overflow  : 5
+[Overflow Report] Num Overflow e: 87
+[Overflow Report] H   Overflow  : 0
+[Overflow Report] V   Overflow  : 159
+[Overflow Report] Final Overflow: 159
+
+Second L Route
+[Overflow Report] Total hCap    : 4187241
+[Overflow Report] Total vCap    : 3555840
+[Overflow Report] Total Usage   : 1954567
+[Overflow Report] Max H Overflow: 0
+[Overflow Report] Max V Overflow: 3
+[Overflow Report] Max Overflow  : 3
+[Overflow Report] Num Overflow e: 71
+[Overflow Report] H   Overflow  : 0
+[Overflow Report] V   Overflow  : 103
+[Overflow Report] Final Overflow: 103
+
+First Z Route
+[Overflow Report] Total hCap    : 4187241
+[Overflow Report] Total vCap    : 3555840
+[Overflow Report] Total Usage   : 1954567
+[Overflow Report] Max H Overflow: 0
+[Overflow Report] Max V Overflow: 3
+[Overflow Report] Max Overflow  : 3
+[Overflow Report] Num Overflow e: 56
+[Overflow Report] H   Overflow  : 0
+[Overflow Report] V   Overflow  : 80
+[Overflow Report] Final Overflow: 80
+
+[INFO] LV routing round 0, enlarge 10 
+[INFO] 10 threshold, 10 expand
+[Overflow Report] total Usage   : 1954567
+[Overflow Report] Max H Overflow: 0
+[Overflow Report] Max V Overflow: 3
+[Overflow Report] Max Overflow  : 3
+[Overflow Report] Num Overflow e: 52
+[Overflow Report] H   Overflow  : 0
+[Overflow Report] V   Overflow  : 76
+[Overflow Report] Final Overflow: 76
+
+[INFO] LV routing round 1, enlarge 15 
+[INFO] 5 threshold, 15 expand
+[Overflow Report] total Usage   : 1954567
+[Overflow Report] Max H Overflow: 0
+[Overflow Report] Max V Overflow: 3
+[Overflow Report] Max Overflow  : 3
+[Overflow Report] Num Overflow e: 48
+[Overflow Report] H   Overflow  : 0
+[Overflow Report] V   Overflow  : 70
+[Overflow Report] Final Overflow: 70
+
+[INFO] LV routing round 2, enlarge 20 
+[INFO] 1 threshold, 20 expand
+[Overflow Report] total Usage   : 1954567
+[Overflow Report] Max H Overflow: 0
+[Overflow Report] Max V Overflow: 3
+[Overflow Report] Max Overflow  : 3
+[Overflow Report] Num Overflow e: 46
+[Overflow Report] H   Overflow  : 0
+[Overflow Report] V   Overflow  : 66
+[Overflow Report] Final Overflow: 66
+
+Running extra iterations to remove overflow...
+Update congestion history type 1
+[INFO] iteration 1, enlarge 20, costheight 9, threshold 10 via cost 2 
+[INFO] log_coef 0.953011, healingTrigger 0 cost_step 5 L 1 cost_type 1 updatetype 1
+[Overflow Report] total Usage   : 1954676
+[Overflow Report] Max H Overflow: 0
+[Overflow Report] Max V Overflow: 0
+[Overflow Report] Max Overflow  : 0
+[Overflow Report] Num Overflow e: 0
+[Overflow Report] H   Overflow  : 0
+[Overflow Report] V   Overflow  : 0
+[Overflow Report] Final Overflow: 0
+
+Usage checked
+Maze routing finished
+[INFO] P3 runtime: 0.160000 sec
+[INFO] Final 2D results: 
+[Overflow Report] total Usage   : 1954676
+[Overflow Report] Max H Overflow: 0
+[Overflow Report] Max V Overflow: 0
+[Overflow Report] Max Overflow  : 0
+[Overflow Report] Num Overflow e: 0
+[Overflow Report] H   Overflow  : 0
+[Overflow Report] V   Overflow  : 0
+[Overflow Report] Final Overflow: 0
+
+Layer Assignment Begins
+Layer assignment finished
+[INFO] 2D + Layer Assignment Runtime: 10.170000 sec
+Post Processing Begins 
+Post Processsing finished
+ Starting via filling
+[INFO] Via related to pin nodes 889476
+[INFO] Via related stiner nodes 43554
+Via filling finished
+
+Final usage/overflow report: 
+[INFO] Usage per layer: 
+    Layer 1 usage: 0
+    Layer 2 usage: 767587
+    Layer 3 usage: 1061300
+    Layer 4 usage: 22151
+    Layer 5 usage: 106969
+
+[INFO] Capacity per layer: 
+    Layer 1 capacity: 0
+    Layer 2 capacity: 2565990
+    Layer 3 capacity: 2433984
+    Layer 4 capacity: 1621251
+    Layer 5 capacity: 1121856
+
+[INFO] Use percentage per layer: 
+    Layer 1 use percentage: 0.0%
+    Layer 2 use percentage: 29.91%
+    Layer 3 use percentage: 43.60%
+    Layer 4 use percentage: 1.37%
+    Layer 5 use percentage: 9.54%
+
+[INFO] Overflow per layer: 
+    Layer 1 overflow: 0
+    Layer 2 overflow: 0
+    Layer 3 overflow: 0
+    Layer 4 overflow: 0
+    Layer 5 overflow: 0
+
+[Overflow Report] Total Usage   : 1958007
+[Overflow Report] Total Capacity: 7743081
+[Overflow Report] Max H Overflow: 0
+[Overflow Report] Max V Overflow: 0
+[Overflow Report] Max Overflow  : 0
+[Overflow Report] H   Overflow  : 0
+[Overflow Report] V   Overflow  : 0
+[Overflow Report] Final Overflow: 0
+
+[INFO] Final usage          : 1958007
+[INFO] Final number of vias : 1047078
+[INFO] Final usage 3D       : 5099241
+[INFO] Total wirelength: 17425763 um
+[INFO] Num routed nets: 191881
+Warning: /mnt/data/workspace/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__ss_100C_1v60.lib, line 32 default_operating_condition ss_100C_1v60 not found.
+Warning: /mnt/data/workspace/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__ff_n40C_1v95.lib, line 31 default_operating_condition ff_n40C_1v95 not found.
+create_clock [get_ports $::env(CLOCK_PORT)]  -name $::env(CLOCK_PORT)  -period $::env(CLOCK_PERIOD)
+set input_delay_value [expr $::env(CLOCK_PERIOD) * $::env(IO_PCT)]
+set output_delay_value [expr $::env(CLOCK_PERIOD) * $::env(IO_PCT)]
+puts "\[INFO\]: Setting output delay to: $output_delay_value"
+[INFO]: Setting output delay to: 4.0
+puts "\[INFO\]: Setting input delay to: $input_delay_value"
+[INFO]: Setting input delay to: 4.0
+set clk_indx [lsearch [all_inputs] [get_port $::env(CLOCK_PORT)]]
+#set rst_indx [lsearch [all_inputs] [get_port resetn]]
+set all_inputs_wo_clk [lreplace [all_inputs] $clk_indx $clk_indx]
+#set all_inputs_wo_clk_rst [lreplace $all_inputs_wo_clk $rst_indx $rst_indx]
+set all_inputs_wo_clk_rst $all_inputs_wo_clk
+# correct resetn
+set_input_delay $input_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] $all_inputs_wo_clk_rst
+#set_input_delay 0.0 -clock [get_clocks $::env(CLOCK_PORT)] {resetn}
+set_output_delay $output_delay_value  -clock [get_clocks $::env(CLOCK_PORT)] [all_outputs]
+# TODO set this as parameter
+set_driving_cell -lib_cell $::env(SYNTH_DRIVING_CELL) -pin $::env(SYNTH_DRIVING_CELL_PIN) [all_inputs]
+set cap_load [expr $::env(SYNTH_CAP_LOAD) / 1000.0]
+puts "\[INFO\]: Setting load to: $cap_load"
+[INFO]: Setting load to: 0.01765
+set_load  $cap_load [all_outputs]
+Warning: missing route to pin _347570_/RESET_B

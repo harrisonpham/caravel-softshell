@@ -1,0 +1,205 @@
+OpenROAD 0.9.0 d03ebfc244
+This program is licensed under the BSD-3 license. See the LICENSE file for details. 
+Components of this program may be licensed under more restrictive licenses which must be honored.
+Error: cannot open '/.openroad'.
+Notice 0: Reading LEF file:  /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged_unpadded.lef
+Notice 0:     Created 13 technology layers
+Notice 0:     Created 25 technology vias
+Notice 0:     Created 438 library cells
+Notice 0: Finished LEF file:  /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged_unpadded.lef
+Warning: /mnt/data/workspace/pdk/sky130A/libs.ref/sky130_fd_sc_hd/lib/sky130_fd_sc_hd__tt_025C_1v80.lib, line 31 default_operating_condition tt_025C_1v80 not found.
+Notice 0: 
+Reading DEF file: /project/openlane/user_proj_example/runs/16-12_10-43/results/placement/user_proj_example.placement.def
+Notice 0: Design: user_proj_example
+Notice 0: 		Created 100000 Insts
+Notice 0: 		Created 200000 Insts
+Notice 0: 		Created 100000 Nets
+Notice 0:     Created 606 pins.
+Notice 0:     Created 289992 components and 1555826 component-terminals.
+Notice 0:     Created 2 special nets and 0 connections.
+Notice 0:     Created 187833 nets and 596309 connections.
+Notice 0: Finished DEF file: /project/openlane/user_proj_example/runs/16-12_10-43/results/placement/user_proj_example.placement.def
+[INFO]: Setting output delay to: 4.0
+[INFO]: Setting input delay to: 4.0
+[INFO]: Setting load to: 0.01765
+[INFO]: Configuring cts characterization...
+[INFO]: Performing clock tree synthesis...
+[INFO]: Looking for the following net(s): wb_clk_i
+ *****************
+ * TritonCTS 2.0 *
+ *****************
+ *****************************
+ *  Create characterization  *
+ *****************************
+Number of created patterns = 50000.
+Number of created patterns = 100000.
+Number of created patterns = 150000.
+Number of created patterns = 200000.
+Number of created patterns = 250000.
+Number of created patterns = 300000.
+Number of created patterns = 313632.
+ Compiling LUT
+    Min. len    Max. len    Min. cap    Max. cap   Min. slew   Max. slew
+           2           8           1          39           1         318
+    [WARNING] 6336 wires are pure wire and no slew degration.
+    TritonCTS forced slew degradation on these wires.
+    Num wire segments: 313632
+    Num keys in characterization LUT: 2039
+    Actual min input cap: 2
+ **********************
+ *  Find clock roots  *
+ **********************
+ Running TritonCTS with user-specified clock roots: wb_clk_i
+ ************************
+ *  Populate TritonCTS  *
+ ************************
+ Initializing clock nets
+ Looking for clock nets in the design
+ Net "wb_clk_i" found
+ Initializing clock net for : "wb_clk_i"
+ Clock net "wb_clk_i" has 26773 sinks
+ TritonCTS found 1 clock nets.
+ ****************************
+ *  Check characterization  *
+ ****************************
+    The chacterization used 4 buffer(s) types. All of them are in the loaded DB.
+ ***********************
+ *  Build clock trees  *
+ ***********************
+ Generating H-Tree topology for net wb_clk_i...
+    Tot. number of sinks: 26773
+    Number of static layers: 0
+ Wire segment unit: 13000 dbu (13 um)
+ Original sink region: [(55925, 88460), (2459425, 2928140)]
+ Normalized sink region: [(4.30192, 6.80462), (189.187, 225.242)]
+    Width:  184.885
+    Height: 218.437
+ Level 1
+    Direction: Vertical
+    # sinks per sub-region: 13387
+    Sub-region size: 184.885 X 109.218
+    Segment length (rounded): 54
+    Key: 9408 outSlew: 34 load: 1 length: 8 isBuffered: 1
+    Key: 7971 outSlew: 11 load: 1 length: 8 isBuffered: 1
+    Key: 9417 outSlew: 34 load: 1 length: 8 isBuffered: 1
+    Key: 7971 outSlew: 11 load: 1 length: 8 isBuffered: 1
+    Key: 9417 outSlew: 34 load: 1 length: 8 isBuffered: 1
+    Key: 7971 outSlew: 11 load: 1 length: 8 isBuffered: 1
+    Key: 1881 outSlew: 23 load: 1 length: 6 isBuffered: 1
+ Level 2
+    Direction: Horizontal
+    # sinks per sub-region: 6694
+    Sub-region size: 92.4423 X 109.218
+    Segment length (rounded): 46
+    Key: 7971 outSlew: 11 load: 1 length: 8 isBuffered: 1
+    Key: 9417 outSlew: 34 load: 1 length: 8 isBuffered: 1
+    Key: 7971 outSlew: 11 load: 1 length: 8 isBuffered: 1
+    Key: 9417 outSlew: 34 load: 1 length: 8 isBuffered: 1
+    Key: 7971 outSlew: 11 load: 1 length: 8 isBuffered: 1
+    Key: 1881 outSlew: 23 load: 1 length: 6 isBuffered: 1
+ Level 3
+    Direction: Vertical
+    # sinks per sub-region: 3347
+    Sub-region size: 92.4423 X 54.6092
+    Segment length (rounded): 28
+    Key: 7971 outSlew: 11 load: 1 length: 8 isBuffered: 1
+    Key: 9417 outSlew: 34 load: 1 length: 8 isBuffered: 1
+    Key: 7971 outSlew: 11 load: 1 length: 8 isBuffered: 1
+    Key: 337 outSlew: 11 load: 1 length: 4 isBuffered: 1
+ Level 4
+    Direction: Horizontal
+    # sinks per sub-region: 1674
+    Sub-region size: 46.2212 X 54.6092
+    Segment length (rounded): 24
+    Key: 9417 outSlew: 34 load: 1 length: 8 isBuffered: 1
+    Key: 7971 outSlew: 11 load: 1 length: 8 isBuffered: 1
+    Key: 9417 outSlew: 34 load: 1 length: 8 isBuffered: 1
+ Level 5
+    Direction: Vertical
+    # sinks per sub-region: 837
+    Sub-region size: 46.2212 X 27.3046
+    Segment length (rounded): 14
+    Key: 7971 outSlew: 11 load: 1 length: 8 isBuffered: 1
+    Key: 1881 outSlew: 23 load: 1 length: 6 isBuffered: 1
+ Level 6
+    Direction: Horizontal
+    # sinks per sub-region: 419
+    Sub-region size: 23.1106 X 27.3046
+    Segment length (rounded): 12
+    Key: 7971 outSlew: 11 load: 1 length: 8 isBuffered: 1
+    Key: 337 outSlew: 11 load: 1 length: 4 isBuffered: 1
+ Level 7
+    Direction: Vertical
+    # sinks per sub-region: 210
+    Sub-region size: 23.1106 X 13.6523
+    Segment length (rounded): 6
+    Key: 1881 outSlew: 23 load: 1 length: 6 isBuffered: 1
+ Level 8
+    Direction: Horizontal
+    # sinks per sub-region: 105
+    Sub-region size: 11.5553 X 13.6523
+    Segment length (rounded): 6
+    Key: 1639 outSlew: 11 load: 1 length: 6 isBuffered: 1
+ Level 9
+    Direction: Vertical
+    # sinks per sub-region: 53
+    Sub-region size: 11.5553 X 6.82615
+    Segment length (rounded): 4
+    Key: 337 outSlew: 11 load: 1 length: 4 isBuffered: 1
+ Level 10
+    Direction: Horizontal
+    # sinks per sub-region: 27
+    Sub-region size: 5.77764 X 6.82615
+    Segment length (rounded): 2
+    Key: 53 outSlew: 11 load: 1 length: 2 isBuffered: 1
+ [WARNING] Creating fake entries in the LUT.
+ Level 11
+    Direction: Vertical
+    # sinks per sub-region: 14
+    Sub-region size: 5.77764 X 3.41308
+    Segment length (rounded): 1
+    Key: 313873 outSlew: 11 load: 1 length: 1 isBuffered: 1
+ Stop criterion found. Max number of sinks is (15)
+ Building clock sub nets...
+ Number of sinks covered: 26773
+ Clock topology of net "wb_clk_i" done.
+ ****************
+ * Post CTS opt *
+ ****************
+ Avg. source sink dist: 36909.2 dbu.
+ Num outlier sinks: 27
+ ********************
+ * Write data to DB *
+ ********************
+ Writing clock net "wb_clk_i" to DB
+    Created 4306 clock buffers.
+    Minimum number of buffers in the clock path: 30.
+    Maximum number of buffers in the clock path: 31.
+    Created 4306 clock nets.
+    Fanout distribution for the current clock = 3:1, 4:8, 5:26, 6:45, 7:69, 8:110, 9:138, 10:164, 11:164, 12:219, 13:199, 14:200, 15:197, 16:171, 17:107, 18:81, 19:50, 20:23, 21:18, 22:14, 23:7, 24:7, 25:3, 26:6, 27:5, 28:4, 29:2, 30:3, 31:1, 33:1, 34:2, 39:2, 45:1.
+    Max level of the clock tree: 11.
+ ... End of TritonCTS execution.
+[INFO]: Legalizing...
+Design Stats
+--------------------------------
+total instances        294298
+multi row instances         0
+fixed instances        102526
+nets                   192141
+design area          7655730.0 u^2
+fixed area           133941.0 u^2
+movable area         2233269.4 u^2
+utilization                30 %
+utilization padded         30 %
+rows                     1131
+row height                2.7 u
+
+Placement Analysis
+--------------------------------
+total displacement    16727.1 u
+average displacement      0.1 u
+max displacement         20.2 u
+original HPWL        12512726.0 u
+legalized HPWL       12515668.9 u
+delta HPWL                  0 %
+

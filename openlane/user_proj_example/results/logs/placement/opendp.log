@@ -1,0 +1,136 @@
+===========================================================================
+   Open Source Mixed-Height Standard Cell Detail Placer < OpenDP_v1.0 >    
+   Developers : SangGi Do, Mingyu Woo                                      
+===========================================================================
+Parsed 10000 number of lines!!
+Parsed 20000 number of lines!!
+Parsed 30000 number of lines!!
+Parsed 40000 number of lines!!
+Parsed 50000 number of lines!!
+Parsed 60000 number of lines!!
+Reading /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged.lef is Done
+
+-------------------- INPUT FILES ----------------------------------
+ benchmark name    : placement
+ directory         : /project/openlane/user_proj_example/runs/16-12_10-43/tmp
+ lef               : /project/openlane/user_proj_example/runs/16-12_10-43/tmp/merged.lef
+ def               : /project/openlane/user_proj_example/runs/16-12_10-43/tmp/placement/user_proj_example.diodes.def
+-------------------------------------------------------------------
+Parsed 10000 number of lines!!
+Parsed 20000 number of lines!!
+Parsed 30000 number of lines!!
+Parsed 40000 number of lines!!
+Parsed 50000 number of lines!!
+Parsed 60000 number of lines!!
+Parsed 70000 number of lines!!
+Parsed 80000 number of lines!!
+Parsed 90000 number of lines!!
+Parsed 100000 number of lines!!
+Parsed 110000 number of lines!!
+Parsed 120000 number of lines!!
+Parsed 130000 number of lines!!
+Parsed 140000 number of lines!!
+Parsed 150000 number of lines!!
+Parsed 160000 number of lines!!
+Parsed 170000 number of lines!!
+Parsed 180000 number of lines!!
+Parsed 190000 number of lines!!
+Parsed 200000 number of lines!!
+Parsed 210000 number of lines!!
+Parsed 220000 number of lines!!
+Parsed 230000 number of lines!!
+Parsed 240000 number of lines!!
+Parsed 250000 number of lines!!
+Parsed 260000 number of lines!!
+Parsed 270000 number of lines!!
+Parsed 280000 number of lines!!
+Parsed 290000 number of lines!!
+Parsed 300000 number of lines!!
+Parsed 310000 number of lines!!
+Parsed 320000 number of lines!!
+Parsed 330000 number of lines!!
+Parsed 340000 number of lines!!
+Parsed 350000 number of lines!!
+Parsed 360000 number of lines!!
+Parsed 370000 number of lines!!
+Parsed 380000 number of lines!!
+Parsed 390000 number of lines!!
+Parsed 400000 number of lines!!
+Parsed 410000 number of lines!!
+Parsed 420000 number of lines!!
+Parsed 430000 number of lines!!
+Parsed 440000 number of lines!!
+Parsed 450000 number of lines!!
+Parsed 460000 number of lines!!
+Parsed 470000 number of lines!!
+Parsed 480000 number of lines!!
+Parsed 490000 number of lines!!
+Parsed 500000 number of lines!!
+Parsed 510000 number of lines!!
+Parsed 520000 number of lines!!
+Parsed 530000 number of lines!!
+Parsed 540000 number of lines!!
+Parsed 550000 number of lines!!
+Parsed 560000 number of lines!!
+Parsed 570000 number of lines!!
+Parsed 580000 number of lines!!
+Parsed 590000 number of lines!!
+Parsed 600000 number of lines!!
+Parsed 610000 number of lines!!
+Parsed 620000 number of lines!!
+Parsed 630000 number of lines!!
+Parsed 640000 number of lines!!
+Parsed 650000 number of lines!!
+Parsed 660000 number of lines!!
+Parsed 670000 number of lines!!
+Parsed 680000 number of lines!!
+Parsed 690000 number of lines!!
+CoreArea: 
+5520.000000 : 10880.000000 - 2494120.000000 : 3087200.000000
+DieArea: 
+0.000000 : 0.000000 - 2488600.000000 : 3076320.000000
+Reading /project/openlane/user_proj_example/runs/16-12_10-43/tmp/placement/user_proj_example.diodes.def is Done
+-------------------- DESIGN ANALYSIS ------------------------------
+  total cells              : 420720
+  multi cells              : 0
+  fixed cells              : 102526
+  total nets               : 192139
+  design area              : 7.65573e+12
+  total f_area             : 1.33941e+11
+  total m_area             : 2.54963e+12
+  design util              : 33.8966
+  num rows                 : 1131
+  row height               : 2720
+-------------------------------------------------------------------
+ non_group_cell_region_assign done ..
+ - - - - - - - - - - - - - - - - - - - - - - - - 
+ non_group_cell_placement done .. 
+ - - - - - - - - - - - - - - - - - - - - - - - - 
+Reading /project/openlane/user_proj_example/runs/16-12_10-43/tmp/placement/user_proj_example.diodes.def is Done
+ DEF file write success !! 
+ location : /project/openlane/user_proj_example/runs/16-12_10-43/results/placement/user_proj_example.placement.def
+-------------------------------------------------------------------
+ tasks                          Wtime      Ctime
+ Parser                         8.140      8.070
+ resgin assign                  8.575      8.500
+ pre-placement                  8.575      8.500
+ non Group cell placement       8.916      8.840
+ All                            8.964      8.890
+ - - - - - EVALUATION - - - - - 
+ AVG_displacement : 54.2436
+ SUM_displacement : 2.28214e+07
+ MAX_displacement : 9200
+ - - - - - - - - - - - - - - - - 
+ GP HPWL          : 1.25408e+07
+ HPWL             : 1.25467e+07
+ avg_Disp_site    : 0.117921
+ avg_Disp_row     : 0.0199425
+ delta_HPWL       : 0.0466474
+ ==== CHECK LEGALITY ==== 
+ row_check ==>> PASS 
+ site_check ==>> PASS 
+ power_check ==>> PASS 
+ edge_check ==>> PASS 
+ placed_check ==>> PASS 
+ overlap_check ==>> PASS 
+ - - - - - < Program END > - - - - - 

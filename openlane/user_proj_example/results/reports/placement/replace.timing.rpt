@@ -1,0 +1,86 @@
+Startpoint: wbs_adr_i[2] (input port clocked by wb_clk_i)
+Endpoint: wbs_dat_o[7] (output port clocked by wb_clk_i)
+Path Group: wb_clk_i
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock wb_clk_i (rise edge)
+   0.00    0.00   clock network delay (ideal)
+   4.00    4.00 ^ input external delay
+   0.01    4.01 ^ wbs_adr_i[2] (in)
+   0.78    4.78 ^ _160705_/X (sky130_fd_sc_hd__a32o_4)
+   1.01    5.80 ^ _160712_/X (sky130_fd_sc_hd__buf_2)
+   0.52    6.32 ^ _162471_/X (sky130_fd_sc_hd__buf_2)
+   1.19    7.51 ^ _162472_/X (sky130_fd_sc_hd__buf_2)
+   1.16    8.67 ^ _162473_/X (sky130_fd_sc_hd__buf_2)
+   0.91    9.58 ^ _162474_/X (sky130_fd_sc_hd__buf_2)
+   0.81   10.39 ^ _163102_/X (sky130_fd_sc_hd__or4_4)
+   0.46   10.85 ^ _164092_/X (sky130_fd_sc_hd__or4_4)
+   0.30   11.16 ^ _164093_/X (sky130_fd_sc_hd__buf_2)
+   0.10   11.26 v _164094_/Y (sky130_fd_sc_hd__inv_2)
+   0.41   11.67 v _280957_/X (sky130_fd_sc_hd__or2_4)
+   0.34   12.01 v _280958_/X (sky130_fd_sc_hd__buf_2)
+   0.34   12.35 v _281237_/X (sky130_fd_sc_hd__buf_2)
+   0.46   12.81 v _281238_/X (sky130_fd_sc_hd__or2_4)
+   0.56   13.37 v _281240_/X (sky130_fd_sc_hd__a32o_4)
+   2.04   15.41 ^ _281241_/Y (sky130_fd_sc_hd__a22oi_4)
+   0.85   16.26 v _312746_/Y (sky130_fd_sc_hd__inv_2)
+   0.00   16.26 v wbs_dat_o[7] (out)
+          16.26   data arrival time
+
+  20.00   20.00   clock wb_clk_i (rise edge)
+   0.00   20.00   clock network delay (ideal)
+   0.00   20.00   clock reconvergence pessimism
+  -4.00   16.00   output external delay
+          16.00   data required time
+---------------------------------------------------------
+          16.00   data required time
+         -16.26   data arrival time
+---------------------------------------------------------
+          -0.26   slack (VIOLATED)
+
+
+Startpoint: wbs_adr_i[2] (input port clocked by wb_clk_i)
+Endpoint: wbs_dat_o[6] (output port clocked by wb_clk_i)
+Path Group: wb_clk_i
+Path Type: max
+
+  Delay    Time   Description
+---------------------------------------------------------
+   0.00    0.00   clock wb_clk_i (rise edge)
+   0.00    0.00   clock network delay (ideal)
+   4.00    4.00 ^ input external delay
+   0.01    4.01 ^ wbs_adr_i[2] (in)
+   0.78    4.78 ^ _160705_/X (sky130_fd_sc_hd__a32o_4)
+   1.01    5.80 ^ _160712_/X (sky130_fd_sc_hd__buf_2)
+   0.52    6.32 ^ _162471_/X (sky130_fd_sc_hd__buf_2)
+   1.19    7.51 ^ _162472_/X (sky130_fd_sc_hd__buf_2)
+   1.16    8.67 ^ _162473_/X (sky130_fd_sc_hd__buf_2)
+   0.91    9.58 ^ _162474_/X (sky130_fd_sc_hd__buf_2)
+   0.81   10.39 ^ _163102_/X (sky130_fd_sc_hd__or4_4)
+   0.46   10.85 ^ _164092_/X (sky130_fd_sc_hd__or4_4)
+   0.30   11.16 ^ _164093_/X (sky130_fd_sc_hd__buf_2)
+   0.10   11.26 v _164094_/Y (sky130_fd_sc_hd__inv_2)
+   0.41   11.67 v _280957_/X (sky130_fd_sc_hd__or2_4)
+   0.34   12.01 v _280958_/X (sky130_fd_sc_hd__buf_2)
+   0.34   12.35 v _281237_/X (sky130_fd_sc_hd__buf_2)
+   0.46   12.81 v _281254_/X (sky130_fd_sc_hd__or2_4)
+   0.56   13.37 v _281255_/X (sky130_fd_sc_hd__a32o_4)
+   2.02   15.39 ^ _281256_/Y (sky130_fd_sc_hd__a22oi_4)
+   0.85   16.24 v _312745_/Y (sky130_fd_sc_hd__inv_2)
+   0.00   16.24 v wbs_dat_o[6] (out)
+          16.24   data arrival time
+
+  20.00   20.00   clock wb_clk_i (rise edge)
+   0.00   20.00   clock network delay (ideal)
+   0.00   20.00   clock reconvergence pessimism
+  -4.00   16.00   output external delay
+          16.00   data required time
+---------------------------------------------------------
+          16.00   data required time
+         -16.24   data arrival time
+---------------------------------------------------------
+          -0.24   slack (VIOLATED)
+
+

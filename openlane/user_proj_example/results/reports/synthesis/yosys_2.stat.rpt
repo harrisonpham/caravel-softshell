@@ -1,0 +1,44 @@
+
+39. Printing statistics.
+
+=== user_proj_example ===
+
+   Number of wires:             187108
+   Number of wire bits:         187696
+   Number of public wires:       26865
+   Number of public wire bits:   27453
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:             187329
+     sky130_fd_sc_hd__a2111o_4      35
+     sky130_fd_sc_hd__a211o_4     1593
+     sky130_fd_sc_hd__a21bo_4       68
+     sky130_fd_sc_hd__a21o_4       203
+     sky130_fd_sc_hd__a21oi_4      173
+     sky130_fd_sc_hd__a22oi_4      163
+     sky130_fd_sc_hd__a2bb2o_4   24546
+     sky130_fd_sc_hd__a32o_4      1198
+     sky130_fd_sc_hd__a41o_4         2
+     sky130_fd_sc_hd__and2_4      2003
+     sky130_fd_sc_hd__and3_4     18762
+     sky130_fd_sc_hd__and4_4       265
+     sky130_fd_sc_hd__buf_2      36084
+     sky130_fd_sc_hd__conb_1        77
+     sky130_fd_sc_hd__dfrtp_4      626
+     sky130_fd_sc_hd__dfstp_4       18
+     sky130_fd_sc_hd__dfxtp_4    26132
+     sky130_fd_sc_hd__inv_2      25679
+     sky130_fd_sc_hd__nand2_4      558
+     sky130_fd_sc_hd__nor2_4      3469
+     sky130_fd_sc_hd__o21a_4      1178
+     sky130_fd_sc_hd__o21ai_4      305
+     sky130_fd_sc_hd__o22a_4      2992
+     sky130_fd_sc_hd__o32a_4       231
+     sky130_fd_sc_hd__o41a_4         6
+     sky130_fd_sc_hd__or2_4      30981
+     sky130_fd_sc_hd__or3_4       8866
+     sky130_fd_sc_hd__or4_4       1116
+
+   Chip area for module '\user_proj_example': 2214343.731198
+
