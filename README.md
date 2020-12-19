@@ -122,7 +122,8 @@ There are plans to do a full top level Caravel testbench soon.
 
 Due to the limited timeline, this design is built with two different versions
 of openlane / PDKs.  You'll need to have both `mpw-one-a` and `mpw-one-b`
-available on your machine to do a full build.
+available on your machine to do a full build.  Note that `mpw-one-a` corresponds
+to `OPENLANE_TAG=rc5`.
 
 ### Softshell `user_proj_example` and Wrapper `user_project_wrapper` Macros
 
@@ -134,7 +135,7 @@ wrapper routing.
 1. Configure `OPENLANE_ROOT` and `PDK_ROOT` to point to `mpw-one-a` versions.
 2. Harden the macro, this will take 8 - 12 hours on a modern 12 core machine.
     ```
-    cd openlane && make user_proj_example
+    cd openlane && make user_proj_example OPENLANE_TAG=rc5
     ```
 3. Review the `final_summary_report.csv` file.  Expect LVS errors only on the
    output pins of the macro (pin mismatches) and a few antenna violations.
@@ -150,7 +151,7 @@ wrapper routing.
     ```
 4. Harden the wrapper macro.
     ```
-    cd openlane && make user_project_wrapper
+    cd openlane && make user_project_wrapper OPENLANE_TAG=rc5
     ```
 5. Review the `final_summary_report.csv` file to confirm 0 DRC/LVS/antenna
    violations.
