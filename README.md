@@ -3,6 +3,8 @@
 Multicore RISC-V MCU for developing software defined peripherals.  This design
 is targetted for the first Google-sponsored MPW shuttle Nov/Dec 2020.
 
+<img src="softshell_gds_screenshot.png" width="480">
+
 ## Configuration
 
 ### CPU / Private Peripheral Configuration
@@ -86,6 +88,22 @@ la_data_out[63:32] - GPIO in
 
 Note: CPU resets are not synchronized while the wishbone reset is.
 ```
+
+## Errata / History
+
+### Rev A1
+
+Rev A1 final GDS was taped out at commit
+`93e9d46f5979d137ce86648ef265781f8aa0ad20` on Dec 18, 2020.
+
+#### Cannot use Caravel Logic Analyzer bits `[4:0]`
+
+Caravel logic analyzer connections to bits `[4:0]` cannot be read because they
+need to be used to control the Softshell resets.  This is not a huge concern
+since these are just used to monitor the Softshell GPIO out signals and these
+pins tend to be used by the Caravel SoC.
+
+Workarounds: None.
 
 ## Verification
 
