@@ -38,7 +38,7 @@ module gpio32_wb # (
     assign iomem_we = wb_sel_i & {4{wb_we_i}};
     assign wb_ack_o = ready;
 
-    gpio #(
+    gpio32 #(
         .GPIO_DATA(GPIO_DATA),
         .GPIO_ENA(GPIO_ENA),
         .GPIO_PD(GPIO_PD),
@@ -61,7 +61,7 @@ module gpio32_wb # (
 
 endmodule
 
-module gpio #(
+module gpio32 #(
     parameter GPIO_DATA = 8'h 00,
     parameter GPIO_ENA  = 8'h 04,
     parameter GPIO_PU   = 8'h 08,

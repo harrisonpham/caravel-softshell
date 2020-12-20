@@ -23,11 +23,14 @@
  *  byte-wide for byte-wide instructions.
  */
 
-`ifdef PICORV32_V
-`error "rv_core.v must be read before picorv32.v!"
-`endif
+`ifndef PICORV32_REGS
+  `ifdef PICORV32_V
+    `error "rv_core.v must be read before picorv32.v!"
+  `endif
 
-`define PICORV32_REGS mgmt_soc_regs
+  `define PICORV32_REGS mgmt_soc_regs
+  `define RV_CORE_DECLARE_REG_MODULE
+`endif
 
 // `include "third_party/picorv32_wb/picorv32.v"
 // `include "third_party/picorv32_wb/gpio32_wb.v"
@@ -268,6 +271,7 @@ module rv_core #(
 
 endmodule // module rv_core
 
+`ifdef RV_CORE_DECLARE_REG_MODULE
 // Implementation note:
 // Replace the following two modules with wrappers for your SRAM cells.
 
@@ -288,3 +292,4 @@ module mgmt_soc_regs (
   assign rdata1 = regs[raddr1[4:0]];
   assign rdata2 = regs[raddr2[4:0]];
 endmodule
+`endif

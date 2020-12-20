@@ -24,10 +24,18 @@
 extern uint32_t flashio_worker_begin;
 extern uint32_t flashio_worker_end;
 
-// Addresses.
+// Private addresses.
+#define CCM_RAM_ADDR        0x00000000
 #define GPIO_BASE_ADDR      0x20000000
+
+// Shared addresses.
+#define SHARED_RAM_ADDR     0x30000000
 #define PINMUX_BASE_ADDR    0x30810000
 #define UART0_BASE_ADDR     0x30820000
+
+// Memory sizes.
+#define CCM_RAM_SIZE        (32 * sizeof(uint32_t))
+#define SHARED_RAM_SIZE     (512 * sizeof(uint32_t))
 
 // Private GPIO peripheral.
 #define REG_GPIO_DATA (*(volatile uint32_t*)(GPIO_BASE_ADDR + 0x00))
@@ -39,7 +47,7 @@ extern uint32_t flashio_worker_end;
 #define REG_PINMUX_IN_UART_RX_SEL \
   (*(volatile uint32_t*)(PINMUX_BASE_ADDR + 0x1000 + 0))
 #define REG_PINMUX_OUT_GPIOX_SEL(x) \
-  (*(volatile uint32_t*)(PINMUX_BASE_ADDR + 0x2000 + (x << 2)))
+  (*(volatile uint32_t*)(PINMUX_BASE_ADDR + 0x2000 + ((x) << 2)))
 
 #define REG_PINMUX_OUT_SEL_UART0_TX 1
 #define REG_PINMUX_OUT_SEL_CPU0_FLEXIO_0 2
