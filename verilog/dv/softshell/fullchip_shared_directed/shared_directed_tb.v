@@ -21,9 +21,11 @@
 `include "tbuart.v"
 
 `ifdef GL
-  `include "../../../gl/user_proj_example.v"
-  `include "../../../gl/user_project_wrapper.v"
+  `include "gl/user_proj_example.v"
+  `include "gl/user_project_wrapper.v"
 `else
+  `include "user_project_wrapper.v"
+  `include "user_proj_example.v"
   `include "softshell/rtl/softshell_top.v"
   `include "softshell/rtl/rv_core.v"
   `include "softshell/rtl/pinmux.v"
@@ -72,8 +74,11 @@ module shared_directed_tb;
   reg softshell_flash_di;
   assign mprj_io[11] = softshell_flash_di;
 
+  // Also tie off management SPI slave DI.
+  assign mprj_io[3] = 1'b1;
+
   initial begin
-    $dumpfile("shared_directed_tb.vcd");
+    $dumpfile("shared_directed_tb.fst");
     $dumpvars(0, shared_directed_tb);
 
     clock = 1'b0;

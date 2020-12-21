@@ -15,7 +15,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 FIRMWARE_PATH = ../../caravel
-RTL_PATH = ../../../rtl
+VERILOG_PATH = ../../..
+RTL_PATH = $(VERILOG_PATH)/rtl
 IP_PATH = ../../../ip
 BEHAVIOURAL_MODELS = ../../caravel
 
@@ -29,7 +30,7 @@ SIM?=RTL
 
 PATTERN = shared_directed
 
-all:  ${PATTERN:=.vcd}
+all:  ${PATTERN:=.fst}
 
 hex:  ${PATTERN:=.hex}
 
@@ -40,12 +41,12 @@ ifeq ($(SIM),RTL)
 	$< -o $@
 else
 	iverilog -DFUNCTIONAL -DSIM -DGL -I $(BEHAVIOURAL_MODELS) \
-	-I $(PDK_PATH) -I $(IP_PATH) -I $(RTL_PATH) \
+	-I $(PDK_PATH) -I $(IP_PATH) -I $(VERILOG_PATH) -I $(RTL_PATH) \
 	$< -o $@
 endif
 
-%.vcd: %.vvp
-	vvp $<
+%.fst: %.vvp
+	vvp $< -fst
 
 %.elf: %.c $(FIRMWARE_PATH)/sections.lds $(FIRMWARE_PATH)/start.s
 	${GCC_PATH}/${GCC_PREFIX}-gcc -march=rv32imc -mabi=ilp32 -Wl,-Bstatic,-T,$(FIRMWARE_PATH)/sections.lds,--strip-debug -ffreestanding -nostdlib -o $@ $(FIRMWARE_PATH)/start.s $<
@@ -61,6 +62,6 @@ endif
 # ---- Clean ----
 
 clean:
-	rm -f *.elf *.hex *.bin *.vvp *.vcd *.log
+	rm -f *.elf *.hex *.bin *.vvp *.vcd *.fst *.log
 
 .PHONY: clean hex all
